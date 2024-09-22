@@ -1,14 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "vendas.h"
+
+int emitir_nota_fiscal() {
+    printf("Nota fiscal emitida...\n\n");
+    return 0;
+}
+
 
 int registrar_venda() {
     printf("Registrar venda\n\n");
     emitir_nota_fiscal();
-    return 0;
-}
-
-int emitir_nota_fiscal() {
-    printf("Nota fiscal emitida...\n\n");
     return 0;
 }
 

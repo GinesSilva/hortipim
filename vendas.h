@@ -2,8 +2,8 @@
 #ifndef VENDAS
 #define VENDAS
 
-void registrar_venda();
+int registrar_venda();
 
-void relatorio_venda_dia();
+int relatorio_venda_dia();
 
 #endif

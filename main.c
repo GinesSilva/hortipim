@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "estoque.h"
-
+#include "fornecedores.h"
+#include "vendas.h"
 
 int main()
 {
@@ -11,5 +12,7 @@ int main()
     cadastro_de_produtos();
     registrar_venda();
     relatorio_venda_dia();
+    cadastrar_fornecedores();
+    historico_de_compras(4);
     return 0;
 }
