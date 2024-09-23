@@ -22,8 +22,12 @@ int saida_de_produtos(int codigo, int quantidade) {
     return 0;
 }
 
-int listar_produto_id(int id) {
-    printf("Produto %d\n\n", id);
+int listar_produto_codigo() {
+    limpar_buffer();
+    int codigo;
+    printf("Insira o codigo do produto: \n>>");
+    scanf("%d", &codigo);
+    listar_codigo(codigo);
     return 0;
 }
 

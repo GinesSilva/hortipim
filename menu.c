@@ -38,7 +38,7 @@ void set_estoque(Programa Programas_estoque[])
     strcpy(Programas_estoque[1].nome, "Saída de produtos");
     strcpy(Programas_estoque[2].nome, "relatório de vendas por produto");
     strcpy(Programas_estoque[3].nome, "Cadastro de produtos");
-    strcpy(Programas_estoque[4].nome, "Listar de produto por id");
+    strcpy(Programas_estoque[4].nome, "Buscar produto por código");
     strcpy(Programas_estoque[5].nome, "Listar todos os produtos");
 }
 
@@ -63,7 +63,7 @@ int show_menu()
     {
         printf("[%d] - %s\n", i + 1, Setores[i]);
     }
-    printf("\n[0] - Sair do programa\n\n");
+    printf("\n[0] - Sair do programa\n\n>>");
     int selecionado;
     scanf("%d", &selecionado);
     return selecionado;
@@ -83,7 +83,7 @@ int show_estoque()
             printf("[%d] - %s\n", i + 1, Programas_estoque[i]);
         }
         printf("\n[9] - Limpar console\n");
-        printf("[0] - Voltar\n\n");
+        printf("[0] - Voltar\n\n>>");
         scanf("%d", &opt);
         switch (opt)
         {
@@ -100,13 +100,16 @@ int show_estoque()
             cadastro_de_produtos();
             break;
         case 5:
-            listar_produto_id(1);
+            listar_produto_codigo();
             break;
         case 6:
             listar_todos_produtos();
             break;
         case 9:
             system("clear");
+            break;
+        case 0:
+            opt = 0;
             break;
         }
     } while (opt != 0);
@@ -118,7 +121,6 @@ int show_vendas()
     int opt;
     do
     {
-        system("clear");
         Programa Programas_vendas[VENDAS_MENU];
         set_vendas(Programas_vendas);
         printf("VENDAS\n\n");
@@ -127,9 +129,11 @@ int show_vendas()
         {
             printf("[%d] - %s\n", i + 1, Programas_vendas[i]);
         }
-        printf("[0] - Voltar\n\n");
+        printf("\n[9] - Limpar console\n");
+        printf("[0] - Voltar\n\n>>");
         scanf("%d", &opt);
-        if(opt ) {
+        if (opt)
+        {
             break;
         }
         switch (opt)
@@ -140,7 +144,14 @@ int show_vendas()
         case 2:
             relatorio_venda_dia();
             break;
+        case 9:
+            system("clear");
+            break;
+        case 0:
+            opt = 0;
+            break;
         }
+
     } while (opt != 0);
     return 0;
 }
@@ -150,7 +161,6 @@ int show_fornecedores()
     int opt;
     do
     {
-        system("clear");
         Programa Programas_fornecedores[FORNECEDORES_MENU];
         set_vendas(Programas_fornecedores);
         printf("FORNECEDORES\n\n");
@@ -159,7 +169,8 @@ int show_fornecedores()
         {
             printf("[%d] - %s\n", i + 1, Programas_fornecedores[i]);
         }
-        printf("[0] - Voltar\n\n");
+        printf("\n[9] - Limpar console\n");
+        printf("[0] - Voltar\n\n>>");
         scanf("%d", &opt);
         switch (opt)
         {
@@ -168,6 +179,12 @@ int show_fornecedores()
             break;
         case 2:
             historico_de_compras();
+            break;
+        case 9:
+            system("clear");
+            break;
+        case 0:
+            opt = 0;
             break;
         }
     } while (opt != 0);
