@@ -3,7 +3,7 @@
 
 #include "estoque.h"
 #include "produto.h"
-#include "db.h"
+#include "repository.h"
 
 #include <string.h>
 
@@ -22,7 +22,13 @@ int saida_de_produtos(int codigo, int quantidade) {
     return 0;
 }
 
-int listar_produtos() {
+int listar_produto_id(int id) {
+    printf("Produto %d\n\n", id);
+    return 0;
+}
+
+int listar_todos_produtos(){
+    listar_todos();
     return 0;
 }
 
@@ -32,6 +38,7 @@ int relatorio_de_vendas_por_produto() {
 }
 
 int cadastro_de_produtos() {
+    system("clear");
     limpar_buffer();
     printf("Cadastro...\n\n");
     Produto p;

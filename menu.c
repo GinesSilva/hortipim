@@ -8,7 +8,7 @@
 
 #define MAX_NOME 50
 #define QTDE_SETORES 3
-#define ESTOQUE_MENU 4
+#define ESTOQUE_MENU 6
 #define VENDAS_MENU 2
 #define FORNECEDORES_MENU 2
 
@@ -38,6 +38,8 @@ void set_estoque(Programa Programas_estoque[])
     strcpy(Programas_estoque[1].nome, "Saída de produtos");
     strcpy(Programas_estoque[2].nome, "relatório de vendas por produto");
     strcpy(Programas_estoque[3].nome, "Cadastro de produtos");
+    strcpy(Programas_estoque[4].nome, "Listar de produto por id");
+    strcpy(Programas_estoque[5].nome, "Listar todos os produtos");
 }
 
 void set_vendas(Programa Programas_vendas[])
@@ -61,7 +63,7 @@ int show_menu()
     {
         printf("[%d] - %s\n", i + 1, Setores[i]);
     }
-    printf("[0] - Sair do programa\n\n");
+    printf("\n[0] - Sair do programa\n\n");
     int selecionado;
     scanf("%d", &selecionado);
     return selecionado;
@@ -72,7 +74,6 @@ int show_estoque()
     int opt;
     do
     {
-        system("clear");
         Programa Programas_estoque[ESTOQUE_MENU];
         set_estoque(Programas_estoque);
         printf("ESTOQUE\n\n");
@@ -81,6 +82,7 @@ int show_estoque()
         {
             printf("[%d] - %s\n", i + 1, Programas_estoque[i]);
         }
+        printf("\n[9] - Limpar console\n");
         printf("[0] - Voltar\n\n");
         scanf("%d", &opt);
         switch (opt)
@@ -96,6 +98,15 @@ int show_estoque()
             break;
         case 4:
             cadastro_de_produtos();
+            break;
+        case 5:
+            listar_produto_id(1);
+            break;
+        case 6:
+            listar_todos_produtos();
+            break;
+        case 9:
+            system("clear");
             break;
         }
     } while (opt != 0);
@@ -118,6 +129,9 @@ int show_vendas()
         }
         printf("[0] - Voltar\n\n");
         scanf("%d", &opt);
+        if(opt ) {
+            break;
+        }
         switch (opt)
         {
         case 1:

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
-#include "db.h"
 
 int main()
 {
