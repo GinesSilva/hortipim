@@ -2,3 +2,5 @@
 /.vscode/
 main
 main.o
+*.sql
+*.db

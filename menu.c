@@ -139,7 +139,7 @@ int show_fornecedores()
         system("clear");
         Programa Programas_fornecedores[FORNECEDORES_MENU];
         set_vendas(Programas_fornecedores);
-        printf("VENDAS\n\n");
+        printf("FORNECEDORES\n\n");
         printf("Escolha a opção desejada \n\n");
         for (int i = 0; i < FORNECEDORES_MENU; i++)
         {
