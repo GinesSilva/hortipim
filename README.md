@@ -5,7 +5,7 @@
 <h4>Debian</h4>
 
 ``` bash
-    apt-get install sqlite3 libsqlite3-dev
+apt-get install sqlite3 libsqlite3-dev
 ```
 
 <h4>Windows</h4>
@@ -62,7 +62,13 @@ CREATE TABLE fornecedores(
     nome_fantasia VARCHAR(20)
 );
 ```
+## Para acessar o banco de dados
 
+<p>No diretório que está banco de dados rode o comando</p>
+
+``` bash
+sqlite3 hortifruti.db
+```
 
 ## Compilação 
 
@@ -71,7 +77,7 @@ CREATE TABLE fornecedores(
 <p>Para compilar e executar basta rodar esse comando na pasta do projeto</p>
 
 ``` bash
-    gcc *.c -o main.o -lsqlite3 && ./main.o
+gcc *.c -o main.o -lsqlite3 && ./main.o
 ```
 
 <h4>Windows</h4>
@@ -81,5 +87,5 @@ CREATE TABLE fornecedores(
 <p>* Lembrar de alterar os caminhos no comando</p>
 
 ``` cmd
-    gcc *.c -o main.exe -I"C:\caminho\para\sqlite\include" -L"C:\caminho\para\sqlite\lib" -lsqlite3
+gcc *.c -o main.exe -I"C:\caminho\para\sqlite\include" -L"C:\caminho\para\sqlite\lib" -lsqlite3
 ```
