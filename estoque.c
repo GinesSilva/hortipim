@@ -1,18 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "estoque.h"
 #include "produto.h"
-#include "repository.h"
-
-#include <string.h>
-
-void limpar_buffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
+#include "estoque_repositorio.h"
+#include "utils.h"
 
 int entrada_de_produtos()
 {

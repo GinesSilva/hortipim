@@ -1,5 +1,5 @@
-#ifndef REPOSITORY
-#define REPOSITORY
+#ifndef ESTOQUE_REPOSITORIO
+#define ESTOQUE_REPOSITORIO
 
 #include "produto.h"
 
