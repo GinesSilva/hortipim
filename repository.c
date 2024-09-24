@@ -120,3 +120,89 @@ int listar_codigo(int codigo)
 
     return 0;
 }
+
+int entrada_produtos(int codigo, int quantidadeEntrada)
+{
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    char *errMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+
+    const char *sql = "UPDATE produtos SET quantidade = quantidade + ? WHERE codigo = ?;";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar o SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return rc;
+    }
+
+    sqlite3_bind_int(stmt, 1, quantidadeEntrada);
+    sqlite3_bind_int(stmt, 2, codigo);  
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        fprintf(stderr, "Erro ao executar o SQL: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        printf("Atualização realizada com sucesso!\n");
+    }
+
+    sqlite3_finalize(stmt);
+
+    sqlite3_close(db);
+    return 0;
+}
+
+int saida_produtos(int codigo, int quantidadeEntrada)
+{
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    char *errMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+
+    const char *sql = "UPDATE produtos SET quantidade = quantidade - ? WHERE codigo = ?;";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar o SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return rc;
+    }
+
+    sqlite3_bind_int(stmt, 1, quantidadeEntrada);
+    sqlite3_bind_int(stmt, 2, codigo);  
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        fprintf(stderr, "Erro ao executar o SQL: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        printf("Atualização realizada com sucesso!\n");
+    }
+
+    sqlite3_finalize(stmt);
+
+    sqlite3_close(db);
+    return 0;
+}
