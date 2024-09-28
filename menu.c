@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "estoque.h"
 #include "fornecedores.h"
 #include "vendas.h"
+#include "utils.h"
+
+#include "fornecedores_repositorio.h"
 
 #define MAX_NOME 50
 #define QTDE_SETORES 3
@@ -56,7 +60,7 @@ void set_fornecedores(Programa Programas_fornecedores[])
 
 int show_menu()
 {
-    system("clear");
+    limpar_terminal();
     set_setores();
     printf("Escolha a opção desejada\n\n");
     for (int i = 0; i < QTDE_SETORES; i++)
@@ -106,7 +110,7 @@ int show_estoque()
             listar_todos_produtos();
             break;
         case 9:
-            system("clear");
+            limpar_terminal();
             break;
         case 0:
             opt = 0;
@@ -145,7 +149,7 @@ int show_vendas()
             relatorio_venda_dia();
             break;
         case 9:
-            system("clear");
+            limpar_terminal();
             break;
         case 0:
             opt = 0;
@@ -181,7 +185,7 @@ int show_fornecedores()
             historico_de_compras();
             break;
         case 9:
-            system("clear");
+            limpar_terminal();
             break;
         case 0:
             opt = 0;
