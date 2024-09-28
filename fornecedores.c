@@ -7,7 +7,7 @@
 #include "utils.h"
 
 int cadastrar_fornecedores() {
-    system("clear");
+    limpar_terminal();
     limpar_buffer();
     char cnpj[15];
     char razao_social[51];

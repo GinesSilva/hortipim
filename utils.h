@@ -4,4 +4,6 @@
 
 void limpar_buffer();
 
+void limpar_terminal();
+
 #endif

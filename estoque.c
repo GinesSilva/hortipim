@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "estoque.h"
 #include "produto.h"
 #include "estoque_repositorio.h"
 #include "utils.h"
+#include "fornecedores_repositorio.h"
+#include "fornecedores.h"
 
 int entrada_de_produtos()
 {
@@ -94,7 +97,7 @@ int relatorio_de_vendas_por_produto()
 
 int cadastro_de_produtos()
 {
-    system("clear");
+    limpar_terminal();
     limpar_buffer();
     printf("Cadastro...\n\n");
     Produto p;
@@ -103,13 +106,27 @@ int cadastro_de_produtos()
 
     printf("Insira os dados do produto a ser adicionado:\n\n");
 
+    do
+    {
+        printf("Código do fornecedor: ");
+        fgets(input, sizeof(input), stdin);
+        p.fornecedor_id = atoi(input);
+        if (buscar_fornecedor(p.fornecedor_id) == false)
+        {
+            printf("Fornecedor não está cadastrado deseja tentar de novo? (s/n)\n");
+            char res;
+            scanf("%c", &res);
+            limpar_buffer();
+            if(res != 's') {
+                limpar_terminal();
+                return -1;
+            }
+        }
+    } while (buscar_fornecedor(p.fornecedor_id) == false || p.fornecedor_id <= 0);
+
     printf("Descrição: ");
     fgets(descricao, sizeof(descricao), stdin);
     descricao[strcspn(descricao, "\n")] = 0;
-
-    printf("Código do fornecedor: ");
-    fgets(input, sizeof(input), stdin);
-    p.fornecedor_id = atoi(input);
 
     printf("Quantidade: ");
     fgets(input, sizeof(input), stdin);

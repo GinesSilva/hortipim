@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <stdbool.h>
 
 #include "produto.h"
+#include "fornecedores_repositorio.h"
+#include "utils.h"
 
 int cadastrar_produto(Produto p)
 {
@@ -15,6 +18,11 @@ int cadastrar_produto(Produto p)
         fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
+
+    if(buscar_fornecedor(p.fornecedor_id) == false) {
+        printf("Fornecedor não está cadastrado");
+        return -1;
+    };
 
     sprintf(sql, "INSERT INTO produtos(codigo, fornecedor_id, descricao, preco_de_compra, preco_de_venda, quantidade) VALUES(NULL, %d, '%s', %.2f, %.2f, %.2f);",
             p.fornecedor_id, p.descricao, p.preco_de_compra, p.preco_de_venda, p.quantidade);
@@ -54,18 +62,18 @@ int listar_todos()
     }
     else
     {
-        system("clear");
-        printf("%-6s | %-11s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
+        limpar_terminal();
+        printf("%-6s | %-20s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             int codigo = sqlite3_column_int(stmt, 0);
-            int fornecedor_id = sqlite3_column_int(stmt, 1);
+            const unsigned char *fornecedor_id = buscar_id(sqlite3_column_int(stmt, 1));
             const unsigned char *descricao = sqlite3_column_text(stmt, 2);
             double preco_compra = sqlite3_column_double(stmt, 3);
             double preco_venda = sqlite3_column_double(stmt, 4);
             double quantidade = sqlite3_column_double(stmt, 5);
 
-            printf("%-6d | %-11d | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
+            printf("%-6d | %-20s | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
         }
     }
 
@@ -97,7 +105,7 @@ int listar_codigo(int codigo)
     else
     {
         sqlite3_bind_int(stmt, 1, codigo);
-        system("clear");
+        limpar_terminal();
         printf("%-6s | %-11s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
