@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "fornecedores.h"
+#include "utils.h"
 
 int cadastro_fornecedor(Fornecedor fornecedor)
 {
@@ -127,4 +128,42 @@ char *buscar_id(int id)
     sqlite3_finalize(stmt);
     sqlite3_close(db);
     return res;
+}
+
+int listar_todos_fornecedores() {
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT * FROM fornecedores;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        limpar_terminal();
+        printf("%-6s | %-14s | %-51s | %-21s\n", "Id", "CNPJ", "Razão social", "Nome Fantasia");
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            int id = sqlite3_column_int(stmt, 0);
+            const unsigned char *cnpj = sqlite3_column_text(stmt, 1);
+            const unsigned char *razao_social = sqlite3_column_text(stmt, 2);
+            const unsigned char *fantasia = sqlite3_column_text(stmt, 3);
+            printf("%-6d | %-14s | %-51s| %-21s\n", id, cnpj, razao_social, fantasia);
+        }
+    }
+
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return 0;
 }

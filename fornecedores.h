@@ -16,6 +16,8 @@ typedef struct
 
 int cadastrar_fornecedores();
 
+int listar_fornecedores();
+
 int historico_de_compras();
 
 #endif

@@ -10,4 +10,6 @@ char* buscar_id(int id);
 
 bool buscar_fornecedor(int id);
 
+int listar_todos_fornecedores();
+
 #endif

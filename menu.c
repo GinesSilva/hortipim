@@ -14,7 +14,7 @@
 #define QTDE_SETORES 3
 #define ESTOQUE_MENU 6
 #define VENDAS_MENU 2
-#define FORNECEDORES_MENU 2
+#define FORNECEDORES_MENU 3
 
 typedef struct
 {
@@ -55,7 +55,8 @@ void set_vendas(Programa Programas_vendas[])
 void set_fornecedores(Programa Programas_fornecedores[])
 {
     strcpy(Programas_fornecedores[0].nome, "Cadastrar fornecedor");
-    strcpy(Programas_fornecedores[1].nome, "Histórico de compras");
+    strcpy(Programas_fornecedores[1].nome, "Listar Fornecedores");
+    strcpy(Programas_fornecedores[2].nome, "Histórico de compras");
 }
 
 int show_menu()
@@ -182,7 +183,7 @@ int show_fornecedores()
             cadastrar_fornecedores();
             break;
         case 2:
-            historico_de_compras();
+            listar_fornecedores();
             break;
         case 9:
             limpar_terminal();
