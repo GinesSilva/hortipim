@@ -218,4 +218,5 @@ int selecionar_programa()
             break;
         }
     }
+    return 0;
 }

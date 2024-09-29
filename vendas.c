@@ -7,14 +7,15 @@ int emitir_nota_fiscal() {
     return 0;
 }
 
-
 int registrar_venda() {
+    //TODO
     printf("Registrar venda\n\n");
     emitir_nota_fiscal();
     return 0;
 }
 
 int relatorio_venda_dia() {
+    //TODO
     printf("Relatorio de venda do dia 01/01/2000\n\n");
     return 0;
 }

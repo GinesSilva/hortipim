@@ -49,9 +49,12 @@ int cadastrar_fornecedores() {
 }
 
 int historico_de_compras(int idFornecedor) {
+    //TODO
     printf("Fornecedor %d historico\n\n", idFornecedor);
+    return 0;
 }
 
 int listar_fornecedores() {
     listar_todos_fornecedores();
+    return 0;
 }
