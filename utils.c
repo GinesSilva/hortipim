@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 const char *get_os()
 {
@@ -20,19 +21,18 @@ const char *get_os()
 
 void limpar_terminal()
 {
-    if (get_os() != "Windows" || get_os() != "Windows 64-bit")
+    if (strcmp(get_os(), "Windows") == 0 || strcmp(get_os(), "Windows 64-bit") == 0)
     {
-        system("clear");
+        system("cls");
     }
     else
     {
-        system("cls");
+        system("clear");
     }
 }
 
 void limpar_buffer()
 {
     int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
