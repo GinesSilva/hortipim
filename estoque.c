@@ -25,16 +25,16 @@ int entrada_de_produtos()
     limpar_buffer();
 
     char opt;
-    printf("Deseja adicionar esse produto?(s/n)\n\n>>");
+    printf("Deseja adicionar esse produto?(s/n)\n>>");
     scanf("%c", &opt);
     switch (opt)
     {
     case 's':
         limpar_buffer();
-        printf("Digite a quantidade de entrada:\n\n>>");
+        printf("Digite a quantidade de entrada:\n>>");
         fgets(input, sizeof(input), stdin);
         quantidade = atof(input);
-        printf("Digite o preço:\n\n>>");
+        printf("Digite o preço:\n>>");
         fgets(input, sizeof(input), stdin);
         preco = atof(input);
         entrada_produtos(codigo, quantidade, preco);
@@ -50,24 +50,24 @@ int entrada_de_produtos()
 
 int saida_de_produtos()
 {
-    printf("saida de produtos\n\n");
+    printf("saída de produtos\n\n");
     int codigo;
     int quantidade;
     limpar_buffer();
-    printf("Codigo do produto irá sair: ");
+    printf("Código do produto irá sair: ");
     scanf("%d", &codigo);
     listar_codigo(codigo);
 
     limpar_buffer();
 
     char opt;
-    printf("O produto está correto?(s/n)\n\n>>");
+    printf("O produto está correto?(s/n)\n>>");
     scanf("%c", &opt);
     switch (opt)
     {
     case 's':
         limpar_buffer();
-        printf("Digite a quantiade de saida:\n\n>>");
+        printf("Digite a quantidade de saída:\n>>");
         scanf("%d", &quantidade);
         saida_produtos(codigo, quantidade);
         break;
@@ -136,10 +136,6 @@ int cadastro_de_produtos()
     fgets(descricao, sizeof(descricao), stdin);
     descricao[strcspn(descricao, "\n")] = 0;
 
-    printf("Quantidade: ");
-    fgets(input, sizeof(input), stdin);
-    p.quantidade = atof(input);
-
     printf("Preço de compra: ");
     fgets(input, sizeof(input), stdin);
     p.preco_de_compra = atof(input);
@@ -150,5 +146,36 @@ int cadastro_de_produtos()
 
     strcpy(p.descricao, descricao);
     cadastrar_produto(p);
+    return 0;
+}
+
+int alterar_preco() 
+{
+    printf("Alteração de preços\n\n");
+    int codigo;
+    float preco;
+    limpar_buffer();
+    printf("Codigo do produto irá alterar: ");
+    scanf("%d", &codigo);
+    listar_codigo(codigo);
+
+    limpar_buffer();
+
+    char opt;
+    printf("O produto está correto?(s/n)\n>>");
+    scanf("%c", &opt);
+    switch (opt)
+    {
+    case 's':
+        limpar_buffer();
+        printf("Digite o novo preço: R$");
+        scanf("%f", &preco);
+        atualizar_preco(codigo, preco);
+        break;
+    case 'n':
+        return 0;
+    default:
+        break;
+    }
     return 0;
 }

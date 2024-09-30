@@ -25,7 +25,7 @@ int cadastrar_produto(Produto p)
         return -1;
     };
     sprintf(sql, "INSERT INTO produtos(codigo, fornecedor_id, descricao, preco_de_compra, preco_de_venda, quantidade) VALUES(NULL, %d, '%s', %.2f, %.2f, %.3f);",
-            p.fornecedor_id, p.descricao, p.preco_de_compra, p.preco_de_venda, p.quantidade);
+            p.fornecedor_id, p.descricao, p.preco_de_compra, p.preco_de_venda, 0.0);
 
     char *err_msg = NULL;
     if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)
@@ -196,7 +196,7 @@ int id_fornecedor(int codigo)
             return fornecedor_id;
         }
     }
-    
+
     sqlite3_finalize(stmt);
     sqlite3_close(db);
     return 0;
@@ -297,6 +297,48 @@ int saida_produtos(int codigo, int saida)
     }
 
     sqlite3_bind_int(stmt, 1, saida);
+    sqlite3_bind_int(stmt, 2, codigo);
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        fprintf(stderr, "Erro ao executar o SQL: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        printf("Atualização realizada com sucesso!\n");
+    }
+
+    sqlite3_finalize(stmt);
+
+    sqlite3_close(db);
+    return 0;
+}
+
+int atualizar_preco(int codigo, float novo_preco) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    char *errMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+
+    const char *sql = "UPDATE produtos SET preco_de_venda = ? WHERE codigo = ?;";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar o SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return rc;
+    }
+
+    sqlite3_bind_int(stmt, 1, novo_preco);
     sqlite3_bind_int(stmt, 2, codigo);
 
     rc = sqlite3_step(stmt);

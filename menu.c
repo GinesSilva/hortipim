@@ -13,7 +13,7 @@
 
 #define MAX_NOME 50
 #define QTDE_SETORES 3
-#define ESTOQUE_MENU 6
+#define ESTOQUE_MENU 7
 #define VENDAS_MENU 2
 #define FORNECEDORES_MENU 3
 
@@ -45,6 +45,7 @@ void set_estoque(Programa Programas_estoque[])
     strcpy(Programas_estoque[3].nome, "Cadastro de produtos");
     strcpy(Programas_estoque[4].nome, "Buscar produto por código");
     strcpy(Programas_estoque[5].nome, "Listar todos os produtos");
+    strcpy(Programas_estoque[6].nome, "Alteração de preços");
 }
 
 void set_vendas(Programa Programas_vendas[])
@@ -110,6 +111,9 @@ int show_estoque()
             break;
         case 6:
             listar_todos_produtos();
+            break;
+        case 7:
+            alterar_preco();
             break;
         case 9:
             limpar_terminal();

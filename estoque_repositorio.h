@@ -13,8 +13,6 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco);
 
 int saida_produtos(int codigo, int quantidadeEntrada);
 
-
-//debug 
-int compra(int fornecedor_id, float quantidade, float preco);
+int atualizar_preco(int codigo, float novo_preco);
 
 #endif
