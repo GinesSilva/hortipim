@@ -50,7 +50,7 @@ void set_estoque(Programa Programas_estoque[])
 
 void set_vendas(Programa Programas_vendas[])
 {
-    strcpy(Programas_vendas[0].nome, "Registrar venda");
+    strcpy(Programas_vendas[0].nome, "Nova venda");
     strcpy(Programas_vendas[1].nome, "Relatório de vendas do dia");
 }
 
@@ -142,10 +142,6 @@ int show_vendas()
         printf("\n[9] - Limpar console\n");
         printf("[0] - Voltar\n\n>>");
         scanf("%d", &opt);
-        if (opt)
-        {
-            break;
-        }
         switch (opt)
         {
         case 1:

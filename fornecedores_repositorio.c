@@ -232,15 +232,16 @@ int listar_historico_compra_fornecedor(int id_entrada)
     {
         sqlite3_bind_int(stmt, 1, id_entrada);
         limpar_terminal();
-        printf("%-6s | %-20s | %-14s | %-6s\n", "Id", "Fornecedor","Quantidade Kg", "Total");
+        printf("%-6s | %-20s | %-14s | %-6s  | %-10s\n", "Id", "Fornecedor","Quantidade Kg", "Total", "Data");
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             int id = sqlite3_column_int(stmt, 0);
             const unsigned char *fornecedor = buscar_id(sqlite3_column_int(stmt, 1));
             double quantidade = sqlite3_column_double(stmt, 2);
             double total = sqlite3_column_double(stmt, 3);
+            const unsigned char *data_compra = sqlite3_column_text(stmt, 4);
 
-            printf("%-6d | %-20s | %-14.3f | %-6.2f\n", id ,fornecedor, quantidade, total);
+            printf("%-6d | %-20s | %-14.3f | %-6.2f | %-10s\n", id ,fornecedor, quantidade, total, data_compra);
 
         }
     }

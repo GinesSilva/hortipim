@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sqlite3.h>
 #include <stdbool.h>
+#include<time.h>
 
 #include "produto.h"
 #include "fornecedores_repositorio.h"
@@ -131,6 +132,12 @@ int listar_codigo(int codigo)
 
 int compra(int fornecedor_id, float quantidade, float preco)
 {
+    time_t t;
+    struct tm *tm_info;
+    char buffer[11];
+    time(&t);
+    tm_info = localtime(&t);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y", tm_info);
     sqlite3 *db;
     char sql[512];
     float valor_total = quantidade * preco;
@@ -145,7 +152,7 @@ int compra(int fornecedor_id, float quantidade, float preco)
         printf("Fornecedor não está cadastrado");
         return -1;
     };
-    sprintf(sql, "INSERT INTO compras(id, fornecedor_id, quantidade, valor_total) VALUES(NULL, '%d', %.3f, %.2f);", fornecedor_id, quantidade, valor_total);
+    sprintf(sql, "INSERT INTO compras(id, fornecedor_id, quantidade, valor_total, data_compra) VALUES(NULL, '%d', %.3f, %.2f, '%s');", fornecedor_id, quantidade, valor_total, buffer);
 
     char *err_msg = NULL;
     if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)
