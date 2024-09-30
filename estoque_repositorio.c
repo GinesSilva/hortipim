@@ -159,7 +159,7 @@ int compra(int fornecedor_id, float quantidade, float preco)
         printf("compra cadastrada com sucesso.\n");
     }
 
-    sqlite3_close(db);  
+    sqlite3_close(db);
 
     return 0;
 }
@@ -173,6 +173,8 @@ int id_fornecedor(int codigo)
     if (rc != SQLITE_OK)
     {
         fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
         return -1;
     }
     const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
@@ -189,15 +191,14 @@ int id_fornecedor(int codigo)
         if (sqlite3_step(stmt) == SQLITE_ROW)
         {
             int fornecedor_id = sqlite3_column_int(stmt, 1);
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
             return fornecedor_id;
         }
     }
-
-    printf("\n\n");
-
+    
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
     return 0;
 }
 
@@ -212,6 +213,15 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
     if (rc)
     {
         fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+
+    rc = sqlite3_exec(db, "BEGIN TRANSACTION;", 0, 0, &errMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao iniciar a transação: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        sqlite3_close(db);
         return rc;
     }
 
@@ -237,19 +247,27 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
     else
     {
         printf("Atualização realizada com sucesso!\n");
-    }
-
-    sqlite3_finalize(stmt);
-
-    sqlite3_close(db);
-    int id = id_fornecedor(codigo);
-    if (id <= 0)
-    {
-        return -1;
-    }
-    else 
-    {
-        compra(id, quantidadeEntrada, preco);
+        int id = id_fornecedor(codigo);
+        if (id <= 0)
+        {
+            return -1;
+        }
+        else
+        {
+            // sqlite3_finalize(stmt);
+            rc = sqlite3_exec(db, "COMMIT;", 0, 0, &errMsg);
+            if (rc != SQLITE_OK)
+            {
+                fprintf(stderr, "Erro ao finalizar a transação: %s\n", errMsg);
+                sqlite3_free(errMsg);
+                return rc;
+            }
+            else
+            {
+                sqlite3_close(db);
+                compra(id, quantidadeEntrada, preco);
+            }
+        }
     }
     return 0;
 }

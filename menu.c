@@ -215,14 +215,7 @@ int selecionar_programa()
             show_fornecedores();
             break;
         case 9: // debug
-            Produto p;
-            p.fornecedor_id = 1; // Supondo que o fornecedor com ID 1 exista
-            strcpy(p.descricao, "Produto Teste");
-            p.quantidade = 10.0;
-            p.preco_de_compra = 5.0;
-            p.preco_de_venda = 7.0;
-
-            cadastrar_produto(p);
+            compra(1, 100, 14.99);
             break;
         case 0:
             cont = 0;
