@@ -19,12 +19,12 @@ int cadastrar_produto(Produto p)
         return -1;
     }
 
-    if(buscar_fornecedor(p.fornecedor_id) == false) {
+    if (buscar_fornecedor(p.fornecedor_id) == false)
+    {
         printf("Fornecedor não está cadastrado");
         return -1;
     };
-
-    sprintf(sql, "INSERT INTO produtos(codigo, fornecedor_id, descricao, preco_de_compra, preco_de_venda, quantidade) VALUES(NULL, %d, '%s', %.2f, %.2f, %.2f);",
+    sprintf(sql, "INSERT INTO produtos(codigo, fornecedor_id, descricao, preco_de_compra, preco_de_venda, quantidade) VALUES(NULL, %d, '%s', %.2f, %.2f, %.3f);",
             p.fornecedor_id, p.descricao, p.preco_de_compra, p.preco_de_venda, p.quantidade);
 
     char *err_msg = NULL;
@@ -35,6 +35,7 @@ int cadastrar_produto(Produto p)
     }
     else
     {
+        limpar_terminal();
         printf("Produto inserido com sucesso.\n");
     }
 
@@ -106,17 +107,17 @@ int listar_codigo(int codigo)
     {
         sqlite3_bind_int(stmt, 1, codigo);
         limpar_terminal();
-        printf("%-6s | %-11s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
+        printf("%-6s | %-20s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             int codigo = sqlite3_column_int(stmt, 0);
-            int fornecedor_id = sqlite3_column_int(stmt, 1);
+            const unsigned char *fornecedor_id = buscar_id(sqlite3_column_int(stmt, 1));
             const unsigned char *descricao = sqlite3_column_text(stmt, 2);
             double preco_compra = sqlite3_column_double(stmt, 3);
             double preco_venda = sqlite3_column_double(stmt, 4);
             double quantidade = sqlite3_column_double(stmt, 5);
 
-            printf("%-6d | %-11d | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
+            printf("%-6d | %-20s | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
         }
     }
 
@@ -128,7 +129,79 @@ int listar_codigo(int codigo)
     return 0;
 }
 
-int entrada_produtos(int codigo, int quantidadeEntrada)
+int compra(int fornecedor_id, float quantidade, float preco)
+{
+    sqlite3 *db;
+    char sql[512];
+    float valor_total = quantidade * preco;
+    if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    if (buscar_fornecedor(fornecedor_id) == false)
+    {
+        printf("Fornecedor não está cadastrado");
+        return -1;
+    };
+    sprintf(sql, "INSERT INTO compras(id, fornecedor_id, quantidade, valor_total) VALUES(NULL, '%d', %.3f, %.2f);", fornecedor_id, quantidade, valor_total);
+
+    char *err_msg = NULL;
+    if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao executar a consulta: %s\n", err_msg);
+        sqlite3_free(err_msg);
+    }
+    else
+    {
+        limpar_terminal();
+        printf("compra cadastrada com sucesso.\n");
+    }
+
+    sqlite3_close(db);  
+
+    return 0;
+}
+
+int id_fornecedor(int codigo)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, codigo);
+        limpar_terminal();
+        printf("%-6s | %-20s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
+        if (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            int fornecedor_id = sqlite3_column_int(stmt, 1);
+            return fornecedor_id;
+        }
+    }
+
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
 {
     sqlite3 *db;
     sqlite3_stmt *stmt;
@@ -142,7 +215,7 @@ int entrada_produtos(int codigo, int quantidadeEntrada)
         return rc;
     }
 
-    const char *sql = "UPDATE produtos SET quantidade = quantidade + ? WHERE codigo = ?;";
+    const char *sql = "UPDATE produtos SET quantidade = quantidade + ?, preco_de_compra = ? WHERE codigo = ?;";
 
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
     if (rc != SQLITE_OK)
@@ -152,8 +225,9 @@ int entrada_produtos(int codigo, int quantidadeEntrada)
         return rc;
     }
 
-    sqlite3_bind_int(stmt, 1, quantidadeEntrada);
-    sqlite3_bind_int(stmt, 2, codigo);  
+    sqlite3_bind_double(stmt, 1, quantidadeEntrada);
+    sqlite3_bind_double(stmt, 2, preco);
+    sqlite3_bind_int(stmt, 3, codigo);
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE)
@@ -168,10 +242,19 @@ int entrada_produtos(int codigo, int quantidadeEntrada)
     sqlite3_finalize(stmt);
 
     sqlite3_close(db);
+    int id = id_fornecedor(codigo);
+    if (id <= 0)
+    {
+        return -1;
+    }
+    else 
+    {
+        compra(id, quantidadeEntrada, preco);
+    }
     return 0;
 }
 
-int saida_produtos(int codigo, int quantidadeEntrada)
+int saida_produtos(int codigo, int saida)
 {
     sqlite3 *db;
     sqlite3_stmt *stmt;
@@ -195,8 +278,8 @@ int saida_produtos(int codigo, int quantidadeEntrada)
         return rc;
     }
 
-    sqlite3_bind_int(stmt, 1, quantidadeEntrada);
-    sqlite3_bind_int(stmt, 2, codigo);  
+    sqlite3_bind_int(stmt, 1, saida);
+    sqlite3_bind_int(stmt, 2, codigo);
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE)

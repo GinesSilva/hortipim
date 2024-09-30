@@ -13,7 +13,9 @@
 int entrada_de_produtos()
 {
     int codigo;
-    int quantidade;
+    float quantidade, preco;
+    char input[100];
+
     limpar_buffer();
     printf("Entrada de produtos\n\n");
     printf("Codigo do produto que deseja adicionar: ");
@@ -29,9 +31,13 @@ int entrada_de_produtos()
     {
     case 's':
         limpar_buffer();
-        printf("Digite a quantiade de entrada:\n\n>>");
-        scanf("%d", &quantidade);
-        entrada_produtos(codigo, quantidade);
+        printf("Digite a quantidade de entrada:\n\n>>");
+        fgets(input, sizeof(input), stdin);
+        quantidade = atof(input);
+        printf("Digite o preço:\n\n>>");
+        fgets(input, sizeof(input), stdin);
+        preco = atof(input);
+        entrada_produtos(codigo, quantidade, preco);
         break;
     case 'n':
         return 0;
@@ -118,7 +124,8 @@ int cadastro_de_produtos()
             char res;
             scanf("%c", &res);
             limpar_buffer();
-            if(res != 's') {
+            if (res != 's')
+            {
                 limpar_terminal();
                 return -1;
             }

@@ -7,6 +7,7 @@
 #include "fornecedores.h"
 #include "vendas.h"
 #include "utils.h"
+#include "estoque_repositorio.h"
 
 #include "fornecedores_repositorio.h"
 
@@ -212,6 +213,16 @@ int selecionar_programa()
             break;
         case 3:
             show_fornecedores();
+            break;
+        case 9: // debug
+            Produto p;
+            p.fornecedor_id = 1; // Supondo que o fornecedor com ID 1 exista
+            strcpy(p.descricao, "Produto Teste");
+            p.quantidade = 10.0;
+            p.preco_de_compra = 5.0;
+            p.preco_de_venda = 7.0;
+
+            cadastrar_produto(p);
             break;
         case 0:
             cont = 0;
