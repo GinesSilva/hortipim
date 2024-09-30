@@ -130,7 +130,8 @@ char *buscar_id(int id)
     return res;
 }
 
-int listar_todos_fornecedores() {
+int listar_todos_fornecedores()
+{
     sqlite3 *db;
     int rc;
     sqlite3_stmt *stmt;
@@ -157,6 +158,90 @@ int listar_todos_fornecedores() {
             const unsigned char *razao_social = sqlite3_column_text(stmt, 2);
             const unsigned char *fantasia = sqlite3_column_text(stmt, 3);
             printf("%-6d | %-14s | %-51s| %-21s\n", id, cnpj, razao_social, fantasia);
+        }
+    }
+
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int buscar_por_cnpj(char *cnpj)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    int id;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    const char *sql = "SELECT * FROM fornecedores WHERE cnpj = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, cnpj, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        id = sqlite3_column_int(stmt, 0);
+    }
+    else
+    {
+        printf("Nenhum resultado encontrado.\n");
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return id;
+}
+
+int listar_historico_compra_fornecedor(int id_entrada)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT * FROM compras WHERE fornecedor_id = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, id_entrada);
+        limpar_terminal();
+        printf("%-6s | %-20s | %-14s | %-6s\n", "Id", "Fornecedor","Quantidade Kg", "Total");
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            int id = sqlite3_column_int(stmt, 0);
+            const unsigned char *fornecedor = buscar_id(sqlite3_column_int(stmt, 1));
+            double quantidade = sqlite3_column_double(stmt, 2);
+            double total = sqlite3_column_double(stmt, 3);
+
+            printf("%-6d | %-20s | %-14.3f | %-6.2f\n", id ,fornecedor, quantidade, total);
+
         }
     }
 

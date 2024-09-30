@@ -186,6 +186,9 @@ int show_fornecedores()
         case 2:
             listar_fornecedores();
             break;
+        case 3:
+            historico_de_compras();
+            break;
         case 9:
             limpar_terminal();
             break;
@@ -215,7 +218,6 @@ int selecionar_programa()
             show_fornecedores();
             break;
         case 9: // debug
-            compra(1, 100, 14.99);
             break;
         case 0:
             cont = 0;

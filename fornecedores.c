@@ -48,9 +48,18 @@ int cadastrar_fornecedores() {
     return 0;
 }
 
-int historico_de_compras(int idFornecedor) {
-    //TODO
-    printf("Fornecedor %d historico\n\n", idFornecedor);
+int historico_de_compras() {
+    char cnpj[15];
+    limpar_terminal();
+    limpar_buffer();
+    printf("Insira o cnpj (apenas numeros)\n\n>>");
+    fgets(cnpj, sizeof(cnpj), stdin);
+    int id = buscar_por_cnpj(cnpj);
+    if(id <= 0) {
+        printf("Fornecedor não encontrado!\n\n");
+        return -1;
+    }
+    listar_historico_compra_fornecedor(id);
     return 0;
 }
 

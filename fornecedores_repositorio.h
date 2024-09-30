@@ -12,4 +12,8 @@ bool buscar_fornecedor(int id);
 
 int listar_todos_fornecedores();
 
+int buscar_por_cnpj(char *cnpj);
+
+int listar_historico_compra_fornecedor(int id);
+
 #endif
