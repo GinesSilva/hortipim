@@ -2,6 +2,7 @@
 #ifndef ESTOQUE
 #define ESTOQUE
 
+
 int entrada_de_produtos();
 
 int saida_de_produtos();

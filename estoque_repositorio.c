@@ -3,11 +3,13 @@
 #include <string.h>
 #include <sqlite3.h>
 #include <stdbool.h>
-#include<time.h>
+#include <time.h>
 
 #include "produto.h"
 #include "fornecedores_repositorio.h"
 #include "utils.h"
+#include "vendas.h"
+#include "estoque_repositorio.h"
 
 int cadastrar_produto(Produto p)
 {
@@ -322,7 +324,8 @@ int saida_produtos(int codigo, int saida)
     return 0;
 }
 
-int atualizar_preco(int codigo, float novo_preco) {
+int atualizar_preco(int codigo, float novo_preco)
+{
     sqlite3 *db;
     sqlite3_stmt *stmt;
     char *errMsg = 0;
@@ -362,4 +365,54 @@ int atualizar_preco(int codigo, float novo_preco) {
 
     sqlite3_close(db);
     return 0;
+}
+
+Resultado buscar_produto(int codigo)
+{
+    ProdutoCheckout p;
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        Resultado r;
+        r.cod = -1;
+        return r;
+    }
+    const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        Resultado r;
+        r.cod = -1;
+        return r;
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, codigo);
+        limpar_terminal();
+        if (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            const unsigned char *descricao = sqlite3_column_text(stmt, 2);
+            double preco_venda = sqlite3_column_double(stmt, 4);
+            p.preco = preco_venda;
+            strcpy(p.descricao, descricao);
+        }
+        else
+        {
+            Resultado r;
+            r.cod = -1;
+            return r;
+        }
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    Resultado r;
+    r.p = p;
+    r.cod = 0;
+    return r;
 }
