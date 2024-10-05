@@ -23,6 +23,25 @@ void displayList(struct lista *head)
     printf("%-40sTotal R$%8.2f\n", " ", total);
 }
 
+// debug map
+
+float quantidade_map(struct map_produto *head, int codigo)
+{
+    float quantidade = 0;
+    struct map_produto *curr = head;
+    while (curr != NULL)
+    {
+        if (codigo == curr->codigo)
+        {
+            quantidade += curr->quantidade;
+        }
+        curr = curr->prox;
+    }
+    return quantidade;
+}
+
+// fim
+
 int emitir_nota_fiscal()
 {
     printf("Nota fiscal emitida...\n\n");
@@ -32,6 +51,7 @@ int emitir_nota_fiscal()
 int registrar_venda()
 {
     struct lista *head = NULL;
+    struct map_produto *head_map = NULL;
     char documento_cliente[14];
     char input[14];
     int cont = 0;
@@ -63,10 +83,25 @@ int registrar_venda()
         }
         else
         {
-            strcpy(p.descricao, r.p.descricao);
-            p.preco = r.p.preco;
-            p.quantidade = quantidade;
-            add(&head, p);
+            if (r.p.quantidade >= quantidade)
+            {
+                if (r.p.quantidade >= quantidade_map(head_map, codigo) + quantidade)
+                {
+                    strcpy(p.descricao, r.p.descricao);
+                    p.preco = r.p.preco;
+                    p.quantidade = quantidade;
+                    add_map(&head_map, codigo, quantidade);
+                    add(&head, p);
+                }
+                else
+                {
+                    printf("Quantidade maior do que a que tem no estoque!\n");
+                }
+            }
+            else
+            {
+                printf("Quantidade maior do que a que tem no estoque!\n");
+            }
         }
         displayList(head);
         int c2 = 0;
@@ -79,19 +114,19 @@ int registrar_venda()
             case 's':
                 limpar_buffer();
                 cont = 0;
-                c2=1;
+                c2 = 1;
                 break;
             case 'n':
                 limpar_buffer();
                 cont = 1;
-                c2=1;
+                c2 = 1;
                 break;
             default:
                 limpar_buffer();
                 printf("Insira um valor valido:\n");
                 break;
             }
-        } while (c2==0);
+        } while (c2 == 0);
     } while (cont == 0);
 
     return 0;

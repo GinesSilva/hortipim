@@ -30,3 +30,29 @@ void add(struct lista **head, ProdutoCheckout produto_checkout)
         atual->prox = nova_lista;
     }
 }
+
+void add_map(struct map_produto **head_map, int codigo, double quantidade) {
+    struct map_produto *novo_map = (struct map_produto *)malloc(sizeof(struct map_produto));
+    if (novo_map == NULL)
+    {
+        printf("Erro ao alocar memória!\n\n");
+    }
+
+    novo_map->codigo = codigo;
+    novo_map->quantidade = quantidade;
+    novo_map->prox = NULL;
+
+    if (*head_map == NULL)
+    {
+        *head_map = novo_map;
+    }
+    else 
+    {
+        struct map_produto *atual = *head_map;
+        while (atual->prox != NULL) 
+        {
+            atual = atual->prox;
+        }
+        atual->prox = novo_map;
+    }
+}

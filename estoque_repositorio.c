@@ -398,7 +398,9 @@ Resultado buscar_produto(int codigo)
         {
             const unsigned char *descricao = sqlite3_column_text(stmt, 2);
             double preco_venda = sqlite3_column_double(stmt, 4);
+            double quantidade = sqlite3_column_double(stmt, 5);
             p.preco = preco_venda;
+            p.quantidade = quantidade;
             strcpy(p.descricao, descricao);
         }
         else
