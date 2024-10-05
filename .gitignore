@@ -3,5 +3,4 @@
 main
 main.o
 main.exe
-*.sql
 *.db
