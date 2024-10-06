@@ -6,10 +6,11 @@
 
 #include "utils.h"
 #include "vendas.h"
+#include "colecoes.h"
 
-int registrar_nova_venda() {
+int registrar_nova_venda(struct venda *venda) {
 
-
+    
 
     return 0;
 }

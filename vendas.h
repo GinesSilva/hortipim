@@ -1,4 +1,5 @@
 #include <time.h>
+#include "colecoes.h"
 
 #ifndef VENDAS
 #define VENDAS
@@ -10,11 +11,13 @@ typedef struct
     double preco;
 } ProdutoCheckout;
 
-typedef struct
+typedef struct venda
 {
+    double total;
+    double troco;
     char *data_venda;
     char *documento_cliente;
-    ProdutoCheckout *produtos;
+    struct map_checkout *produtos;
 } Venda;
 
 int registrar_venda();

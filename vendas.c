@@ -7,23 +7,38 @@
 #include "utils.h"
 #include "vendas.h"
 #include "estoque_repositorio.h"
-#include "lista.h"
+#include "colecoes.h"
 
-void displayList(struct lista *head)
+char *dataAtual()
+{
+    time_t t;
+    struct tm *tm_info;
+    char *buffer = (char *)malloc(20 * sizeof(char));
+
+    if (buffer == NULL)
+    {
+        return NULL;
+    }
+
+    time(&t);
+    tm_info = localtime(&t);
+    strftime(buffer, 20, "%d/%m/%Y %H:%M:%S", tm_info);
+    return buffer;
+}
+
+void displayList(struct map_checkout *head)
 {
     double total = 0;
-    struct lista *curr = head;
-    printf("%-20s %-10s %-10s %-10s\n", "Descrição", "Quantidade", "Preço kg", "Total produto");
+    struct map_checkout *curr = head;
+    printf("%-7s %-20s %-10s %-10s %-10s\n", "Produto", "Descrição", "Quantidade", "Preço kg", "Total produto");
     while (curr != NULL)
     {
         total += curr->pc.quantidade * curr->pc.preco;
-        printf("%-20s %-8.2f %-8.2f %8.2f\n", curr->pc.descricao, curr->pc.quantidade, curr->pc.preco, curr->pc.quantidade * curr->pc.preco);
+        printf("%-7d %-20s %-8.2f %-8.2f %8.2f\n", curr->index, curr->pc.descricao, curr->pc.quantidade, curr->pc.preco, curr->pc.quantidade * curr->pc.preco);
         curr = curr->prox;
     }
     printf("%-40sTotal R$%8.2f\n", " ", total);
 }
-
-// debug map
 
 float quantidade_map(struct map_produto *head, int codigo)
 {
@@ -40,7 +55,17 @@ float quantidade_map(struct map_produto *head, int codigo)
     return quantidade;
 }
 
-// fim
+float valor_compra(struct map_produto *head)
+{
+    double total = 0;
+    struct map_produto *curr = head;
+    while (curr != NULL)
+    {
+        total += curr->quantidade * curr->preco;
+        curr = curr->prox;
+    }
+    return total;
+}
 
 int emitir_nota_fiscal()
 {
@@ -50,10 +75,16 @@ int emitir_nota_fiscal()
 
 int registrar_venda()
 {
-    struct lista *head = NULL;
+    struct map_checkout *head = NULL;
     struct map_produto *head_map = NULL;
-    char documento_cliente[14];
-    char input[14];
+    struct venda *venda = malloc(sizeof(Venda));
+    if (venda == NULL)
+    {
+        printf("Erro ao alocar memória para venda.\n");
+        return 1;
+    }
+    char documento_cliente[16];
+    char input[16];
     int cont = 0;
     double quantidade;
     char continuar;
@@ -63,7 +94,7 @@ int registrar_venda()
     printf("cpf ou cnpj do cliente: ");
     fgets(documento_cliente, sizeof(input), stdin);
     documento_cliente[strcspn(documento_cliente, "\n")] = 0;
-
+    int index = 1;
     do
     {
         quantidade = 0;
@@ -87,11 +118,13 @@ int registrar_venda()
             {
                 if (r.p.quantidade >= quantidade_map(head_map, codigo) + quantidade)
                 {
+
                     strcpy(p.descricao, r.p.descricao);
                     p.preco = r.p.preco;
                     p.quantidade = quantidade;
-                    add_map(&head_map, codigo, quantidade);
-                    add(&head, p);
+                    add_map(&head_map, codigo, quantidade, r.p.preco);
+                    add(&head, p, index);
+                    index++;
                 }
                 else
                 {
@@ -107,19 +140,43 @@ int registrar_venda()
         int c2 = 0;
         do
         {
-            printf("Adicionar mais um produto?(s/n) ");
+            printf("\n\n\n(a) adicionar produto ao carrinho (f) finalizar compra (r) remover produto do carrinho\n>>");
             scanf("%c", &continuar);
             switch (continuar)
             {
-            case 's':
+            case 'a':
                 limpar_buffer();
                 cont = 0;
                 c2 = 1;
                 break;
-            case 'n':
+            case 'f':
                 limpar_buffer();
                 cont = 1;
                 c2 = 1;
+                char *dt = dataAtual();
+                venda->documento_cliente = documento_cliente;
+                venda->data_venda = dt;
+                venda->produtos = head;
+                venda->total = valor_compra(head_map);
+                float valor_pago = 0;
+                printf("Valor pago: ");
+                scanf("%f", &valor_pago);
+                limpar_buffer();
+                float troco = 0;
+                troco = valor_pago - venda->total;
+                printf("%.2f", troco);
+                venda->troco = troco;
+                registrar_nova_venda(venda);
+                break;
+            case 'r':
+                limpar_buffer();
+                printf("Indice do protudo a ser removido: ");
+                int index = 0;
+                scanf("%d", &index);
+                removerElemento(&head, index);
+                limpar_terminal();
+                limpar_buffer();
+                displayList(head);
                 break;
             default:
                 limpar_buffer();
