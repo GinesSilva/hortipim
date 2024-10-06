@@ -217,11 +217,11 @@ int selecionar_programa()
         case 3:
             show_fornecedores();
             break;
-        case 9: // debug
-            //registrar_venda();
-            break;
         case 0:
             cont = 0;
+            break;
+        default:
+            cont = 1;
             break;
         }
     }
