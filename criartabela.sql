@@ -24,6 +24,7 @@ CREATE TABLE vendas(
 
 CREATE TABLE produtos_vendidos(
     id INTEGER PRIMARY KEY,
+    codigo INTEGER,
     venda_id INTEGER,
     quantidade DECIMAL(10,3),
     valor_total DECIMAL(10,2)
