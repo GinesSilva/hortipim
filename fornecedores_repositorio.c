@@ -253,3 +253,7 @@ int listar_historico_compra_fornecedor(int id_entrada)
 
     return 0;
 }
+
+int vendas_produto() {
+    
+}

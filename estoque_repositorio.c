@@ -348,7 +348,7 @@ int atualizar_preco(int codigo, float novo_preco)
         return rc;
     }
 
-    sqlite3_bind_int(stmt, 1, novo_preco);
+    sqlite3_bind_double(stmt, 1, novo_preco);
     sqlite3_bind_int(stmt, 2, codigo);
 
     rc = sqlite3_step(stmt);
@@ -417,4 +417,49 @@ Resultado buscar_produto(int codigo)
     r.p = p;
     r.cod = 0;
     return r;
+}
+
+int relatorio_produto(int codigo)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT pv.quantidade, pv.valor_total AS valor, v.data_venda, v.total, p.descricao FROM produtos_vendidos pv INNER JOIN vendas v ON v.id == pv.venda_id INNER JOIN produtos p ON p.codigo = ? WHERE pv.codigo = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, codigo);
+        sqlite3_bind_int(stmt, 2, codigo);
+        limpar_terminal();
+        printf("%-10s | %-10s | %-25s | %-30s | %-6s | %13s\n", "Quantidade", "valor", "Data", "Descrição", "Total", "Total Compra");
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            double quantidade = sqlite3_column_double(stmt, 0);
+            double valor = sqlite3_column_double(stmt, 1);
+            const unsigned char *data = sqlite3_column_text(stmt, 2);
+            double total = valor * quantidade;
+            double total_compra = sqlite3_column_double(stmt, 3);
+            const unsigned char *descricao = sqlite3_column_text(stmt, 4);
+
+
+            printf("%-10.3f | %-10.2f | %-25s | %-30s | %-6.2f | %-6.2f\n", quantidade, valor, data, descricao, total, total_compra);
+        }
+    }
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return 0;
 }

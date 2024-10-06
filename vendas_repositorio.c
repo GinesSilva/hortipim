@@ -24,8 +24,8 @@ int produtos_vendidos(struct map_checkout *map, int id_venda)
             return -1;
         }
 
-        sprintf(sql, "INSERT INTO produtos_vendidos(id, venda_id, quantidade, valor_total) VALUES(NULL, '%d', %.3f, %.2f);",
-                id_venda, curr->pc.quantidade, curr->pc.preco);
+        sprintf(sql, "INSERT INTO produtos_vendidos(id, venda_id, quantidade, valor_total, codigo) VALUES(NULL, '%d', %.3f, %.2f, %d);",
+                id_venda, curr->pc.quantidade, curr->pc.preco, curr->pc.codigo);
 
         char *err_msg = NULL;
         if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)

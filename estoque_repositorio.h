@@ -24,4 +24,6 @@ int atualizar_preco(int codigo, float novo_preco);
 
 Resultado buscar_produto(int codigo);
 
+int relatorio_produto(int codigo);
+
 #endif

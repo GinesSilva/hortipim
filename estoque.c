@@ -97,8 +97,13 @@ int listar_todos_produtos()
 
 int relatorio_de_vendas_por_produto()
 {
-    // TODO
+    limpar_terminal();
+    int codigo;
     printf("Relatorio de vendas por produto\n\n");
+    limpar_buffer();
+    printf("Codigo do produto que deseja obter o relatorio: ");
+    scanf("%d", &codigo);
+    relatorio_produto(codigo);
     return 0;
 }
 
@@ -149,7 +154,7 @@ int cadastro_de_produtos()
     return 0;
 }
 
-int alterar_preco() 
+int alterar_preco()
 {
     printf("Alteração de preços\n\n");
     int codigo;
