@@ -119,3 +119,49 @@ int emitir_nota_fiscal(struct venda *venda)
     fclose(file);
     return 0;
 }
+
+int relatorio_venda_dia_banco(char *data)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT v.data_venda, v.total, v.troco FROM vendas v WHERE CAST(data_venda AS CHAR) LIKE ?;";
+    double total_dia = 0;
+    double total_cx = 0;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    else
+    {
+        char data_param[25];
+        strcpy(data_param, data);
+        strcat(data_param, "%");
+        sqlite3_bind_text(stmt, 1, data_param, -1, SQLITE_STATIC);
+        limpar_terminal();
+        printf("%-25s | %-6s | %5s\n", "Data", "Total", "Troco");
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            const unsigned char *data = sqlite3_column_text(stmt, 0);
+            double total = sqlite3_column_double(stmt, 1);
+            double troco = sqlite3_column_double(stmt, 2);
+            printf("%-25s | %-6.2f | %-6.2f\n", data, total, troco);
+            total_dia += total;
+            total_cx += total - troco;
+        }
+    }
+    printf("Total do caixa: R$ %.2f\nTotal do dia: R$ %.2f", total_cx, total_dia);
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return 0;
+}

@@ -14,6 +14,7 @@ typedef struct map_checkout
 
 typedef struct map_produto
 {
+    int index;
     int codigo;
     double quantidade;
     double preco;
@@ -22,8 +23,10 @@ typedef struct map_produto
 
 void add(struct map_checkout **head, ProdutoCheckout produto_checkout, int index);
 
-void add_map(struct map_produto **head, int codigo, double quantidade, double preco);
+void add_map(struct map_produto **head, int codigo, double quantidade, double preco, int index);
 
-void removerElemento(struct map_checkout **head, int index);
+void remover_elemento(struct map_checkout **head, int index);
+
+void remover_elemento_produto(struct map_produto **head, int index);
 
 #endif

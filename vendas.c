@@ -117,7 +117,7 @@ int registrar_venda()
                     p.preco = r.p.preco;
                     p.quantidade = quantidade;
                     p.codigo = codigo;
-                    add_map(&head_map, codigo, quantidade, r.p.preco);
+                    add_map(&head_map, codigo, quantidade, r.p.preco, index);
                     add(&head, p, index);
                     index++;
                 }
@@ -171,7 +171,8 @@ int registrar_venda()
                 printf("Indice do protudo a ser removido: ");
                 int index = 0;
                 scanf("%d", &index);
-                removerElemento(&head, index);
+                remover_elemento(&head, index);
+                remover_elemento_produto(&head_map, index);
                 limpar_terminal();
                 limpar_buffer();
                 displayList(head);
@@ -196,8 +197,7 @@ int relatorio_venda_dia()
     time(&t);
     tm_info = localtime(&t);
     strftime(buffer, sizeof(buffer), "%d/%m/%Y", tm_info);
-    // strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", tm_info);
-    printf("Data e hora atual: %s\n", buffer);
-    printf("Relatorio de venda do dia 01/01/2000\n\n");
+    printf("Relatorio de venda do dia %s\n\n", buffer);
+    relatorio_venda_dia_banco(buffer);
     return 0;
 }
