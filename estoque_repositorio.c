@@ -281,7 +281,7 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
     return 0;
 }
 
-int saida_produtos(int codigo, int saida)
+int saida_produtos(int codigo, float saida)
 {
     sqlite3 *db;
     sqlite3_stmt *stmt;
@@ -305,7 +305,7 @@ int saida_produtos(int codigo, int saida)
         return rc;
     }
 
-    sqlite3_bind_int(stmt, 1, saida);
+    sqlite3_bind_double(stmt, 1, saida);
     sqlite3_bind_int(stmt, 2, codigo);
 
     rc = sqlite3_step(stmt);

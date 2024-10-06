@@ -36,3 +36,15 @@ void limpar_buffer()
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+void split(char *str, char antigo, char novo)
+{
+    while (*str)
+    {
+        if (*str == antigo)
+        {               
+            *str = novo; 
+        }
+        str++;
+    }
+}

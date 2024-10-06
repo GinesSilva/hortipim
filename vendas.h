@@ -9,6 +9,7 @@ typedef struct
     char descricao[50];
     double quantidade;
     double preco;
+    int codigo;
 } ProdutoCheckout;
 
 typedef struct venda

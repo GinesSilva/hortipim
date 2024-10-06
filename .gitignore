@@ -4,3 +4,4 @@ main
 main.o
 main.exe
 *.db
+*.txt

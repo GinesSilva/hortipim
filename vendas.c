@@ -67,12 +67,6 @@ float valor_compra(struct map_produto *head)
     return total;
 }
 
-int emitir_nota_fiscal()
-{
-    printf("Nota fiscal emitida...\n\n");
-    return 0;
-}
-
 int registrar_venda()
 {
     struct map_checkout *head = NULL;
@@ -122,6 +116,7 @@ int registrar_venda()
                     strcpy(p.descricao, r.p.descricao);
                     p.preco = r.p.preco;
                     p.quantidade = quantidade;
+                    p.codigo = codigo;
                     add_map(&head_map, codigo, quantidade, r.p.preco);
                     add(&head, p, index);
                     index++;
@@ -168,6 +163,7 @@ int registrar_venda()
                 venda->troco = troco;
                 printf("Pressione ENTER para continuar...\n\n");
                 getchar();
+                emitir_nota_fiscal(venda);
                 registrar_nova_venda(venda);
                 break;
             case 'r':

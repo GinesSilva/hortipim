@@ -18,7 +18,7 @@ int listar_codigo(int codigo);
 
 int entrada_produtos(int codigo, float quantidadeEntrada, float preco);
 
-int saida_produtos(int codigo, int quantidadeEntrada);
+int saida_produtos(int codigo, float saida);
 
 int atualizar_preco(int codigo, float novo_preco);
 
