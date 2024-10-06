@@ -164,8 +164,10 @@ int registrar_venda()
                 limpar_buffer();
                 float troco = 0;
                 troco = valor_pago - venda->total;
-                printf("%.2f", troco);
+                printf("Troco R$%.2f\n", troco);
                 venda->troco = troco;
+                printf("Pressione ENTER para continuar...\n\n");
+                getchar();
                 registrar_nova_venda(venda);
                 break;
             case 'r':

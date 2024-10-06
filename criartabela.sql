@@ -17,7 +17,9 @@ CREATE TABLE fornecedores(
 CREATE TABLE vendas(
     id INTEGER PRIMARY KEY,
     data_venda DATETIME,
-    documento_cliente VARCHAR(14)
+    documento_cliente VARCHAR(14),
+    total DECIMAL(10,2),
+    troco DECIMAL(10,2)
 );
 
 CREATE TABLE produtos_vendidos(

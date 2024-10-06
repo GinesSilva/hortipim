@@ -218,7 +218,7 @@ int selecionar_programa()
             show_fornecedores();
             break;
         case 9: // debug
-            registrar_venda();
+            //registrar_venda();
             break;
         case 0:
             cont = 0;
