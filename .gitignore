@@ -5,3 +5,5 @@ main.o
 main.exe
 *.db
 *.txt
+*bkp
+sqlite3*
