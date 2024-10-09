@@ -10,6 +10,7 @@ CREATE TABLE produtos(
 CREATE TABLE fornecedores(
     id INTEGER PRIMARY KEY,
     cnpj VARCHAR(14) UNIQUE,
+    inscricao_estadual VARCHAR(12)
     razao_social VARCHAR(50) UNIQUE,
     nome_fantasia VARCHAR(20)
 );

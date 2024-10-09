@@ -18,8 +18,8 @@ int cadastro_fornecedor(Fornecedor fornecedor)
         return -1;
     }
 
-    sprintf(sql, "INSERT INTO fornecedores(id, cnpj, razao_social, nome_fantasia) VALUES(NULL, '%s', '%s', '%s');",
-            fornecedor.cnpj, fornecedor.razao_social, fornecedor.nome_fantasia);
+    sprintf(sql, "INSERT INTO fornecedores(id, cnpj, razao_social, nome_fantasia, inscricao_estadual) VALUES(NULL, '%s', '%s', '%s', '%s');",
+            fornecedor.cnpj, fornecedor.razao_social, fornecedor.nome_fantasia, fornecedor.inscricao_estadual);
 
     char *err_msg = NULL;
     if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)
