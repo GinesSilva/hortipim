@@ -105,6 +105,7 @@ int listar_codigo(int codigo)
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
     {
         fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        return -1;
     }
     else
     {

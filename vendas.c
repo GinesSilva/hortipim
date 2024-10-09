@@ -135,7 +135,7 @@ int registrar_venda()
         int c2 = 0;
         do
         {
-            printf("\n\n\n(a) adicionar produto ao carrinho (f) finalizar compra (r) remover produto do carrinho\n>>");
+            printf("\n\n\n(a) adicionar produto ao carrinho (f) finalizar compra (r) remover produto do carrinho (c) cancelar\n>>");
             scanf("%c", &continuar);
             switch (continuar)
             {
@@ -176,6 +176,10 @@ int registrar_venda()
                 limpar_terminal();
                 limpar_buffer();
                 displayList(head);
+                break;
+            case 'c':
+                c2 = 1;
+                cont = 1;
                 break;
             default:
                 limpar_buffer();

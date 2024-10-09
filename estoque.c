@@ -15,67 +15,115 @@ int entrada_de_produtos()
     int codigo;
     float quantidade, preco;
     char input[100];
-
-    limpar_buffer();
-    printf("Entrada de produtos\n\n");
-    printf("Codigo do produto que deseja adicionar: ");
-    scanf("%d", &codigo);
-    listar_codigo(codigo);
-
-    limpar_buffer();
-
-    char opt;
-    printf("Deseja adicionar esse produto?(s/n)\n>>");
-    scanf("%c", &opt);
-    switch (opt)
+    int res;
+    do
     {
-    case 's':
         limpar_buffer();
-        printf("Digite a quantidade de entrada:\n>>");
-        fgets(input, sizeof(input), stdin);
-        quantidade = atof(input);
-        printf("Digite o preço:\n>>");
-        fgets(input, sizeof(input), stdin);
-        preco = atof(input);
-        entrada_produtos(codigo, quantidade, preco);
-        break;
-    case 'n':
-        return 0;
-    default:
-        break;
-    }
+        printf("Entrada de produtos\n\n");
+        printf("Codigo do produto que deseja adicionar ou 0 para sair: ");
+        scanf("%d", &codigo);
+        if (codigo == 0)
+        {
+            limpar_terminal();
+            return -1;
+        }
+        res = listar_codigo(codigo);
+        limpar_buffer();
+        bool cont = false;
 
+        if (res != 0)
+        {
+            do
+            {
+                char opt;
+                printf("Deseja adicionar esse produto?(s/n)\n>>");
+                scanf("%c", &opt);
+                switch (opt)
+                {
+                case 's':
+                    limpar_buffer();
+                    printf("Digite a quantidade de entrada:\n>>");
+                    fgets(input, sizeof(input), stdin);
+                    quantidade = atof(input);
+                    printf("Digite o preço:\n>>");
+                    fgets(input, sizeof(input), stdin);
+                    preco = atof(input);
+                    entrada_produtos(codigo, quantidade, preco);
+                    break;
+                case 'n':
+                    cont == false;
+                    break;
+                default:
+                    limpar_terminal();
+                    listar_codigo(codigo);
+                    printf("Digite um valor valido!\n");
+                    break;
+                }
+            } while (cont == true);
+        }
+        else
+        {
+            limpar_terminal();
+            printf("Produto não encontrado!\n\nPressione ENTER para continuar...\n\n");
+        }
+
+    } while (res == 0);
     return 0;
 }
 
 int saida_de_produtos()
 {
-    printf("saída de produtos\n\n");
     int codigo;
     int quantidade;
-    limpar_buffer();
-    printf("Código do produto irá sair: ");
-    scanf("%d", &codigo);
-    listar_codigo(codigo);
-
-    limpar_buffer();
-
-    char opt;
-    printf("O produto está correto?(s/n)\n>>");
-    scanf("%c", &opt);
-    switch (opt)
+    int res;
+    do
     {
-    case 's':
         limpar_buffer();
-        printf("Digite a quantidade de saída:\n>>");
-        scanf("%d", &quantidade);
-        saida_produtos(codigo, quantidade);
-        break;
-    case 'n':
-        return 0;
-    default:
-        break;
-    }
+        printf("Saída de produtos (QUEBRA/PERDA)\n\n");
+        printf("Código do produto irá quebrar ou 0 para sair: ");
+        scanf("%d", &codigo);
+        if(codigo == 0) {
+            limpar_terminal();
+            return -1;
+        }
+        res = listar_codigo(codigo);
+        limpar_buffer();
+        bool cont = false;
+
+        if (res != 0)
+        {
+            do
+            {
+                char opt;
+                printf("O produto está correto?(s/n)\n>>");
+                scanf("%c", &opt);
+                switch (opt)
+                {
+                case 's':
+                    limpar_buffer();
+                    printf("Digite a quantidade de saída:\n>>");
+                    scanf("%d", &quantidade);
+                    saida_produtos(codigo, quantidade);
+                    printf("Produto jogado na quebra!\n\n");
+                    break;
+                case 'n':
+                    cont = true;
+                    break;
+                default:
+                    limpar_terminal();
+                    listar_codigo(codigo);
+                    printf("Digite um valor valido!\n");
+                    break;
+                }
+            } while (cont == true);
+        }
+        else
+        {
+            limpar_terminal();
+            printf("Produto não encontrado!\n\nPressione ENTER para continuar...\n\n");
+        }
+    } while (res == 0);
+
     return 0;
 }
 
@@ -125,15 +173,41 @@ int cadastro_de_produtos()
         p.fornecedor_id = atoi(input);
         if (buscar_fornecedor(p.fornecedor_id) == false)
         {
-            printf("Fornecedor não está cadastrado deseja tentar de novo? (s/n)\n");
-            char res;
-            scanf("%c", &res);
-            limpar_buffer();
-            if (res != 's')
+            bool cont = true;
+            do
             {
-                limpar_terminal();
-                return -1;
-            }
+                printf("Fornecedor não está cadastrado\n\n\n");
+                printf("(c) cancelar (n) novo fornecedor (d) digitar código\n>>");
+                char res;
+                scanf("%c", &res);
+                limpar_buffer();
+                switch (res)
+                {
+                case 'c':
+                {
+                    limpar_terminal();
+                    return -1;
+                }
+                case 'd':
+                {
+                    cont = false;
+                    break;
+                }
+                case 'n':
+                {
+                    cont = false;
+                    printf("Pressione ENTER");
+                    cadastrar_fornecedores();
+                    break;
+                }
+
+                default:
+                    limpar_terminal();
+                    printf("Digite um valor valido\n");
+                    cont = true;
+                    break;
+                }
+            } while (cont == true);
         }
     } while (buscar_fornecedor(p.fornecedor_id) == false || p.fornecedor_id <= 0);
 
