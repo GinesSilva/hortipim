@@ -41,7 +41,7 @@ void set_estoque(Programa Programas_estoque[])
 {
     strcpy(Programas_estoque[0].nome, "Entrada de produtos");
     strcpy(Programas_estoque[1].nome, "Saída de produtos");
-    strcpy(Programas_estoque[2].nome, "relatório de vendas por produto");
+    strcpy(Programas_estoque[2].nome, "Relatório de vendas por produto");
     strcpy(Programas_estoque[3].nome, "Cadastro de produtos");
     strcpy(Programas_estoque[4].nome, "Buscar produto por código");
     strcpy(Programas_estoque[5].nome, "Listar todos os produtos");
