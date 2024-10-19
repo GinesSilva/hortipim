@@ -194,7 +194,6 @@ int registrar_venda()
 
 int relatorio_venda_dia()
 {
-
     time_t t;
     struct tm *tm_info;
     char buffer[20];
@@ -203,5 +202,28 @@ int relatorio_venda_dia()
     strftime(buffer, sizeof(buffer), "%d/%m/%Y", tm_info);
     printf("Relatorio de venda do dia %s\n\n", buffer);
     relatorio_venda_dia_banco(buffer);
+    return 0;
+}
+
+int relatorio_venda_periodo()
+{
+    char input[20];
+    char inicio[20];
+    char final[20];
+
+    limpar_buffer();
+
+    printf("Data de inicio: (dd/mm/aaaa): ");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = 0;
+    strcpy(inicio, input);
+
+    printf("Data final: (dd/mm/aaaa): ");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = 0;
+    strcpy(final, input);
+
+    relatorio_periodo(inicio, final);
+    
     return 0;
 }

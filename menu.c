@@ -14,7 +14,7 @@
 #define MAX_NOME 50
 #define QTDE_SETORES 3
 #define ESTOQUE_MENU 7
-#define VENDAS_MENU 2
+#define VENDAS_MENU 3
 #define FORNECEDORES_MENU 3
 
 typedef struct
@@ -52,6 +52,7 @@ void set_vendas(Programa Programas_vendas[])
 {
     strcpy(Programas_vendas[0].nome, "Nova venda");
     strcpy(Programas_vendas[1].nome, "Relatório de vendas do dia");
+    strcpy(Programas_vendas[2].nome, "Relatório de vendas por período");
 }
 
 void set_fornecedores(Programa Programas_fornecedores[])
@@ -150,6 +151,9 @@ int show_vendas()
         case 2:
             relatorio_venda_dia();
             break;
+        case 3:
+            relatorio_venda_periodo();
+            break;    
         case 9:
             limpar_terminal();
             break;

@@ -25,4 +25,6 @@ int registrar_venda();
 
 int relatorio_venda_dia();
 
+int relatorio_venda_periodo();
+
 #endif

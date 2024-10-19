@@ -9,5 +9,6 @@ int emitir_nota_fiscal(struct venda *venda);
 
 int relatorio_venda_dia_banco(char *data);
 
+int relatorio_periodo(char *inicio, char *final);
 
 #endif
