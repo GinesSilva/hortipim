@@ -21,7 +21,7 @@ apt-get install sqlite3 libsqlite3-dev
 
 1. Após o download, localize o arquivo ZIP e extraia seu conteúdo para um diretório de sua escolha, como `C:\sqlite`.
 
-#### Passo 3: Adicionar ao PATH (Opcional)
+#### Passo 3: Adicionar ao PATH
 
 Para facilitar o uso do SQLite a partir do Prompt de Comando, você pode adicionar o diretório onde o SQLite foi extraído ao seu PATH:
 
@@ -46,7 +46,7 @@ Certifique-se de que você tem os arquivos de cabeçalho e a biblioteca do SQLit
 ## Tabelas Banco de dados
 
 ```sql
-CREATE TABLE produtos(
+CREATE TABLE IF NOT EXISTS produtos(
     codigo INTEGER PRIMARY KEY,
     fornecedor_id INTEGER,
     descricao VARCHAR(50),
@@ -55,11 +55,36 @@ CREATE TABLE produtos(
     quantidade DECIMAL(10,3)
 );
 
-CREATE TABLE fornecedores(
+CREATE TABLE IF NOT EXISTS fornecedores(
     id INTEGER PRIMARY KEY,
-    cnpj VARCHAR(14),
-    razao_social VARCHAR(50),
+    cnpj VARCHAR(14) UNIQUE,
+    inscricao_estadual VARCHAR(12)
+    razao_social VARCHAR(50) UNIQUE,
     nome_fantasia VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS vendas(
+    id INTEGER PRIMARY KEY,
+    data_venda DATETIME,
+    documento_cliente VARCHAR(14),
+    total DECIMAL(10,2),
+    troco DECIMAL(10,2)
+);
+
+CREATE TABLE IF NOT EXISTS produtos_vendidos(
+    id INTEGER PRIMARY KEY,
+    codigo INTEGER,
+    venda_id INTEGER,
+    quantidade DECIMAL(10,3),
+    valor_total DECIMAL(10,2)
+);
+
+CREATE TABLE IF NOT EXISTS compras(
+    id INTEGER PRIMARY KEY,
+    fornecedor_id INTEGER,
+    quantidade DECIMAL(10,3),
+    valor_total DECIMAL(10,2),
+    data_compra DATE
 );
 ```
 ## Para acessar o banco de dados
@@ -70,7 +95,7 @@ CREATE TABLE fornecedores(
 sqlite3 hortifruti.db
 ```
 
-## Compilação 
+## Compilação
 
 <h4>Debian</h4>
 
@@ -87,5 +112,5 @@ gcc *.c -o main.o -lsqlite3 && ./main.o
 <p>* Lembrar de alterar os caminhos no comando</p>
 
 ``` cmd
-gcc *.c -o main.exe -I"C:\caminho\para\sqlite\include" -L"C:\caminho\para\sqlite\lib" -lsqlite3
+gcc *.c -o main.exe -I "C:\sqlite" -L "C:\sqlite" -lsqlite3
 ```
