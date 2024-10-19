@@ -86,6 +86,9 @@ int registrar_nova_venda(struct venda *venda)
 int emitir_nota_fiscal(struct venda *venda)
 {
     char nome_arquivo[100];
+    strcpy(nome_arquivo, "nf_");
+    strcat(nome_arquivo, venda->data_venda);
+    strcat(nome_arquivo, ".txt");
     split(nome_arquivo, ' ', '_');
     split(nome_arquivo, '/', '_');
     split(nome_arquivo, ':', '_');
