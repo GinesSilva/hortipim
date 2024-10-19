@@ -6,4 +6,5 @@ main.exe
 *.db
 *.txt
 *bkp
+*.sql
 sqlite3*
