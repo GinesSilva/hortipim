@@ -145,7 +145,7 @@ int registrar_venda()
                 c2 = 1;
                 break;
             case 'f':
-                limpar_buffer();
+                int conf_troco = 0;
                 cont = 1;
                 c2 = 1;
                 char *dt = dataAtual();
@@ -154,13 +154,25 @@ int registrar_venda()
                 venda->produtos = head;
                 venda->total = valor_compra(head_map);
                 float valor_pago = 0;
-                printf("Valor pago: ");
-                scanf("%f", &valor_pago);
-                limpar_buffer();
-                float troco = 0;
-                troco = valor_pago - venda->total;
-                printf("Troco R$%.2f\n", troco);
-                venda->troco = troco;
+                do
+                {
+                    limpar_buffer();
+                    printf("Valor pago: ");
+                    scanf("%f", &valor_pago);
+                    if (valor_pago >= venda->total)
+                    {
+                        conf_troco = 1;
+                        float troco = 0;
+                        limpar_buffer();
+                        troco = valor_pago - venda->total;
+                        printf("Troco R$%.2f\n", troco);
+                        venda->troco = troco;
+                    }
+                    else
+                    {
+                        printf("Valor menor que o da compra!\n\n");
+                    }
+                } while (conf_troco == 0);
                 printf("Pressione ENTER para continuar...\n\n");
                 getchar();
                 emitir_nota_fiscal(venda);
@@ -224,6 +236,6 @@ int relatorio_venda_periodo()
     strcpy(final, input);
 
     relatorio_periodo(inicio, final);
-    
+
     return 0;
 }
