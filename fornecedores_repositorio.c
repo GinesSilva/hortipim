@@ -132,6 +132,8 @@ char *buscar_id(int id)
 
 int listar_todos_fornecedores()
 {
+    limpar_buffer();
+    limpar_terminal();
     sqlite3 *db;
     int rc;
     sqlite3_stmt *stmt;
@@ -155,9 +157,9 @@ int listar_todos_fornecedores()
         {
             int id = sqlite3_column_int(stmt, 0);
             const unsigned char *cnpj = sqlite3_column_text(stmt, 1);
-            const unsigned char *razao_social = sqlite3_column_text(stmt, 2);
-            const unsigned char *fantasia = sqlite3_column_text(stmt, 3);
-            printf("%-6d | %-14s | %-51s| %-21s\n", id, cnpj, razao_social, fantasia);
+            const unsigned char *razao_social = sqlite3_column_text(stmt, 3);
+            const unsigned char *fantasia = sqlite3_column_text(stmt, 4);
+            printf("%-6d | %-14s | %-51s | %-21s\n", id, cnpj, razao_social, fantasia);
         }
     }
 

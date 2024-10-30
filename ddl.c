@@ -40,7 +40,7 @@ int fornecedores() {
       return -1;
   }
 
-  sprintf(sql, "CREATE TABLE IF NOT EXISTS fornecedores(id INTEGER PRIMARY KEY, cnpj VARCHAR(14) UNIQUE, inscricao_estadual VARCHAR(12) razao_social VARCHAR(50) UNIQUE, nome_fantasia VARCHAR(20));");
+  sprintf(sql, "CREATE TABLE IF NOT EXISTS fornecedores(id INTEGER PRIMARY KEY, cnpj VARCHAR(14) UNIQUE, inscricao_estadual VARCHAR(12), razao_social VARCHAR(255) UNIQUE, nome_fantasia VARCHAR(255));");
 
   char *err_msg = NULL;
   if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)

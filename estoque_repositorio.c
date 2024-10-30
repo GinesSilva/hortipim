@@ -453,7 +453,6 @@ int relatorio_produto(int codigo)
             double total_compra = sqlite3_column_double(stmt, 3);
             const unsigned char *descricao = sqlite3_column_text(stmt, 4);
 
-
             printf("%-10.3f | %-10.2f | %-25s | %-30s | %-6.2f | %-6.2f\n", quantidade, valor, data, descricao, total, total_compra);
         }
     }

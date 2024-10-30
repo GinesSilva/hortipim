@@ -15,8 +15,8 @@ int cadastrar_fornecedores()
         limpar_buffer();
         char cnpj[15];
         char ie[14];
-        char razao_social[51];
-        char fantasia[21];
+        char razao_social[256];
+        char fantasia[256];
         printf("Cadastrar fornecedor...\n\n");
         printf("Insira o cnpj (apenas números)\n\n>>");
         fgets(cnpj, sizeof(cnpj), stdin);

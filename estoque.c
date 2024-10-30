@@ -22,7 +22,7 @@ int entrada_de_produtos()
         printf("Entrada de produtos\n\n");
         printf("Codigo do produto que deseja adicionar ou 0 para sair: ");
         scanf("%d", &codigo);
-        if (codigo == 0)
+        if (codigo <= 0)
         {
             limpar_terminal();
             return -1;
@@ -31,7 +31,7 @@ int entrada_de_produtos()
         limpar_buffer();
         bool cont = false;
 
-        if (res != 0)
+        if (res == 0)
         {
             do
             {
@@ -90,7 +90,7 @@ int saida_de_produtos()
         limpar_buffer();
         bool cont = false;
 
-        if (res != 0)
+        if (res == 0)
         {
             do
             {
