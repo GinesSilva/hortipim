@@ -8,3 +8,6 @@ main.exe
 *bkp
 *.sql
 sqlite3*
+/pim/
+*.zip
+/HotifrutiERP/

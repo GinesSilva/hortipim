@@ -41,13 +41,38 @@ int entrada_de_produtos()
                 switch (opt)
                 {
                 case 's':
+                    bool negativo = true;
                     limpar_buffer();
-                    printf("Digite a quantidade de entrada:\n>>");
-                    fgets(input, sizeof(input), stdin);
-                    quantidade = atof(input);
-                    printf("Digite o preço:\n>>");
-                    fgets(input, sizeof(input), stdin);
-                    preco = atof(input);
+                    do
+                    {
+                        printf("Digite a quantidade de entrada:\n>>");
+                        fgets(input, sizeof(input), stdin);
+                        quantidade = atof(input);
+                        if (quantidade <= 0)
+                        {
+                            printf("A quantidade de entrada deve ser maior que zero\n\n");
+                        }
+                        else
+                        {
+                            negativo = false;
+                        }
+                    } while (negativo);
+                    negativo = true;
+                    do
+                    {
+                        printf("Digite o preço:\n>>");
+                        fgets(input, sizeof(input), stdin);
+                        preco = atof(input);
+                        if (preco <= 0)
+                        {
+                            printf("O preço deve ser maior que zero\n\n");
+                        }
+                        else
+                        {
+                            negativo = false;
+                        }
+                    } while (negativo);
+
                     entrada_produtos(codigo, quantidade, preco);
                     break;
                 case 'n':
@@ -82,7 +107,8 @@ int saida_de_produtos()
         printf("Saída de produtos (QUEBRA/PERDA)\n\n");
         printf("Código do produto irá quebrar ou 0 para sair: ");
         scanf("%d", &codigo);
-        if(codigo == 0) {
+        if (codigo == 0)
+        {
             limpar_terminal();
             return -1;
         }
@@ -211,17 +237,43 @@ int cadastro_de_produtos()
         }
     } while (buscar_fornecedor(p.fornecedor_id) == false || p.fornecedor_id <= 0);
 
+    bool negativos = true;
     printf("Descrição: ");
     fgets(descricao, sizeof(descricao), stdin);
     descricao[strcspn(descricao, "\n")] = 0;
 
-    printf("Preço de compra: ");
-    fgets(input, sizeof(input), stdin);
-    p.preco_de_compra = atof(input);
+    do
+    {
+        printf("Preço de compra: ");
+        fgets(input, sizeof(input), stdin);
+        p.preco_de_compra = atof(input);
+        if (p.preco_de_compra <= 0)
+        {
+            printf("Inserir um valor maior que zero para o preço de compra do produto!\n\n");
+        }
+        else
+        {
+            negativos = false;
+        }
+    } while (negativos);
 
-    printf("Preço de venda: ");
-    fgets(input, sizeof(input), stdin);
-    p.preco_de_venda = atof(input);
+    negativos = true;
+    do
+    {
+        printf("Preço de venda: ");
+        fgets(input, sizeof(input), stdin);
+        p.preco_de_venda = atof(input);
+
+        if (p.preco_de_venda <= 0)
+        {
+            printf("Inserir um valor maior que zero para o preço de venda do produto!\n\n");
+        }
+        else
+        {
+            negativos = false;
+        }
+
+    } while (negativos);
 
     strcpy(p.descricao, descricao);
     cadastrar_produto(p);
@@ -246,9 +298,20 @@ int alterar_preco()
     switch (opt)
     {
     case 's':
-        limpar_buffer();
-        printf("Digite o novo preço: R$");
-        scanf("%f", &preco);
+        bool negativo = true;
+        do
+        {
+            limpar_buffer();
+            printf("Digite o novo preço: R$");
+            scanf("%f", &preco);
+            if(preco <= 0) {
+                printf("O preço do produto não pode ser igual ou menor que zero\n\n");
+            }
+            else 
+            {
+                negativo = false;
+            }
+        } while (negativo);
         atualizar_preco(codigo, preco);
         break;
     case 'n':
