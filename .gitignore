@@ -11,3 +11,6 @@ sqlite3*
 /pim/
 *.zip
 /HotifrutiERP/
+*.exe
+/pim*/
+*tar.gz
