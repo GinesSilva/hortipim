@@ -37,7 +37,7 @@ void limpar_buffer()
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-void split(char *str, char antigo, char novo)
+void replace(char *str, char antigo, char novo)
 {
     while (*str)
     {
