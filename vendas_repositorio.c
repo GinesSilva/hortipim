@@ -89,9 +89,9 @@ int emitir_nota_fiscal(struct venda *venda)
     strcpy(nome_arquivo, "nf_");
     strcat(nome_arquivo, venda->data_venda);
     strcat(nome_arquivo, ".txt");
-    split(nome_arquivo, ' ', '_');
-    split(nome_arquivo, '/', '_');
-    split(nome_arquivo, ':', '_');
+    replace(nome_arquivo, ' ', '_');
+    replace(nome_arquivo, '/', '_');
+    replace(nome_arquivo, ':', '_');
     printf("%s", nome_arquivo);
     FILE *file = fopen(nome_arquivo, "w");
     if (file == NULL)
@@ -136,7 +136,6 @@ int relatorio_venda_dia_banco(char *data)
     }
     const char *sql = "SELECT v.data_venda, v.total, v.troco FROM vendas v WHERE CAST(data_venda AS CHAR) LIKE ?;";
     double total_dia = 0;
-    double total_cx = 0;
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
     {
         fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
@@ -154,20 +153,30 @@ int relatorio_venda_dia_banco(char *data)
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             const unsigned char *data = sqlite3_column_text(stmt, 0);
+            int dia, mes, ano, h, m, s;
+            size_t length = strlen((const char *)data);
+            unsigned char *datafIn = malloc(length + 1);
+            unsigned char *datafOut = malloc(length + 1);
+            if (datafIn)
+            {
+                strcpy((char *)datafIn, (const char *)data);
+            }
+            sscanf(datafIn, "%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &h, &m, &s);
+            sprintf(datafOut, "%02d/%02d/%d %02d:%02d:%02d", dia, mes, ano, h, m, s);
             double total = sqlite3_column_double(stmt, 1);
             double troco = sqlite3_column_double(stmt, 2);
-            printf("%-25s | %-6.2f | %-6.2f\n", data, total, troco);
+            printf("%-25s | %-6.2f | %-6.2f\n", datafOut, total, troco);
             total_dia += total;
-            total_cx += total - troco;
+            free(datafIn);
+            free(datafOut);
         }
     }
     printf("\n\n");
-    printf("Total do caixa: R$ %.2f\nTotal do dia: R$ %.2f", total_cx, total_dia);
+    printf("Total do dia: R$ %.2f", total_dia);
     printf("\n\n");
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
     return 0;
 }
 
@@ -184,7 +193,6 @@ int relatorio_periodo(char *inicio, char *final)
     }
     const char *sql = "SELECT v.data_venda, v.total, v.troco FROM vendas v WHERE data_venda BETWEEN ? AND ?;";
     double total_dia = 0;
-    double total_cx = 0;
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
     {
         fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
@@ -206,15 +214,24 @@ int relatorio_periodo(char *inicio, char *final)
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             const unsigned char *data = sqlite3_column_text(stmt, 0);
+            int dia, mes, ano, h, m, s;
+            size_t length = strlen((const char *)data);
+            unsigned char *datafIn = malloc(length + 1);
+            unsigned char *datafOut = malloc(length + 1);
+            if (datafIn)
+            {
+                strcpy((char *)datafIn, (const char *)data);
+            }
+            sscanf(datafIn, "%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &h, &m, &s);
+            sprintf(datafOut, "%02d/%02d/%d %02d:%02d:%02d", dia, mes, ano, h, m, s);
             double total = sqlite3_column_double(stmt, 1);
             double troco = sqlite3_column_double(stmt, 2);
             printf("%-25s | %-6.2f | %-6.2f\n", data, total, troco);
             total_dia += total;
-            total_cx += total - troco;
         }
     }
     printf("\n\n");
-    printf("Total do caixa: R$ %.2f\nTotal do dia: R$ %.2f", total_cx, total_dia);
+    printf("Total do dia: R$ %.2f", total_dia);
     printf("\n\n");
 
     sqlite3_finalize(stmt);

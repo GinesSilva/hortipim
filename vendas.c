@@ -22,7 +22,7 @@ char *dataAtual()
 
     time(&t);
     tm_info = localtime(&t);
-    strftime(buffer, 20, "%d/%m/%Y %H:%M:%S", tm_info);
+    strftime(buffer, 20, "%Y-%m-%d %H:%M:%S", tm_info);
     return buffer;
 }
 
@@ -211,7 +211,7 @@ int relatorio_venda_dia()
     char buffer[20];
     time(&t);
     tm_info = localtime(&t);
-    strftime(buffer, sizeof(buffer), "%d/%m/%Y", tm_info);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", tm_info);
     printf("Relatorio de venda do dia %s\n\n", buffer);
     relatorio_venda_dia_banco(buffer);
     return 0;
@@ -225,12 +225,12 @@ int relatorio_venda_periodo()
 
     limpar_buffer();
 
-    printf("Data de inicio: (dd/mm/aaaa): ");
+    printf("Data de inicio: (aaaa-mm-dd): ");
     fgets(input, sizeof(input), stdin);
     input[strcspn(input, "\n")] = 0;
     strcpy(inicio, input);
 
-    printf("Data final: (dd/mm/aaaa): ");
+    printf("Data final: (aaaa-mm-dd): ");
     fgets(input, sizeof(input), stdin);
     input[strcspn(input, "\n")] = 0;
     strcpy(final, input);
