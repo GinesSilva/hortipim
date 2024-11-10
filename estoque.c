@@ -99,7 +99,7 @@ int entrada_de_produtos()
 int saida_de_produtos()
 {
     int codigo;
-    int quantidade;
+    float quantidade;
     int res;
     do
     {
@@ -128,12 +128,11 @@ int saida_de_produtos()
                 case 's':
                     limpar_buffer();
                     printf("Digite a quantidade de saída:\n>>");
-                    scanf("%d", &quantidade);
+                    scanf("%f", &quantidade);
                     saida_produtos(codigo, quantidade);
-                    printf("Produto jogado na quebra!\n\n");
                     break;
                 case 'n':
-                    cont = true;
+                    cont = false;
                     break;
                 default:
                     limpar_terminal();
@@ -174,9 +173,15 @@ int relatorio_de_vendas_por_produto()
     limpar_terminal();
     int codigo;
     printf("Relatorio de vendas por produto\n\n");
+    printf("Codigo do produto que deseja obter o relatório ou 0 para sair: ");
     limpar_buffer();
-    printf("Codigo do produto que deseja obter o relatorio: ");
     scanf("%d", &codigo);
+    if (codigo == 0)
+    {
+        limpar_terminal();
+        return -1;
+    }
+
     relatorio_produto(codigo);
     return 0;
 }
@@ -304,10 +309,11 @@ int alterar_preco()
             limpar_buffer();
             printf("Digite o novo preço: R$");
             scanf("%f", &preco);
-            if(preco <= 0) {
+            if (preco <= 0)
+            {
                 printf("O preço do produto não pode ser igual ou menor que zero\n\n");
             }
-            else 
+            else
             {
                 negativo = false;
             }

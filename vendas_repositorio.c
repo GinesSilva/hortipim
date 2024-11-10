@@ -148,8 +148,33 @@ int relatorio_venda_dia_banco(char *data)
         strcat(data_param, "%");
         sqlite3_bind_text(stmt, 1, data_param, -1, SQLITE_STATIC);
         limpar_terminal();
-        printf("%-25s | %-6s | %5s\n", "Data", "Total", "Troco");
-        printf("--------------------------------------------------------\n");
+        if (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            printf("%-25s | %-6s | %5s\n", "Data", "Total", "Troco");
+            printf("--------------------------------------------------------\n");
+            const unsigned char *data = sqlite3_column_text(stmt, 0);
+            int dia, mes, ano, h, m, s;
+            size_t length = strlen((const char *)data);
+            unsigned char *datafIn = malloc(length + 1);
+            unsigned char *datafOut = malloc(length + 1);
+            if (datafIn)
+            {
+                strcpy((char *)datafIn, (const char *)data);
+            }
+            sscanf(datafIn, "%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &h, &m, &s);
+            sprintf(datafOut, "%02d/%02d/%d %02d:%02d:%02d", dia, mes, ano, h, m, s);
+            double total = sqlite3_column_double(stmt, 1);
+            double troco = sqlite3_column_double(stmt, 2);
+            printf("%-25s | %-6.2f | %-6.2f\n", datafOut, total, troco);
+            total_dia += total;
+            free(datafIn);
+            free(datafOut);
+        }
+        else
+        {
+            printf("Não foi feita nenhuma venda hoje: %s\n\n", data);
+            return -1;
+        }
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             const unsigned char *data = sqlite3_column_text(stmt, 0);
@@ -209,8 +234,30 @@ int relatorio_periodo(char *inicio, char *final)
         sqlite3_bind_text(stmt, 1, inicio_param, -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, final_param, -1, SQLITE_STATIC);
         limpar_terminal();
-        printf("%-25s | %-6s | %5s\n", "Data", "Total", "Troco");
-        printf("--------------------------------------------------------\n");
+        if (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            printf("%-25s | %-6s | %5s\n", "Data", "Total", "Troco");
+            printf("--------------------------------------------------------\n");
+            const unsigned char *data = sqlite3_column_text(stmt, 0);
+            int dia, mes, ano, h, m, s;
+            size_t length = strlen((const char *)data);
+            unsigned char *datafIn = malloc(length + 1);
+            unsigned char *datafOut = malloc(length + 1);
+            if (datafIn)
+            {
+                strcpy((char *)datafIn, (const char *)data);
+            }
+            sscanf(datafIn, "%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &h, &m, &s);
+            sprintf(datafOut, "%02d/%02d/%d %02d:%02d:%02d", dia, mes, ano, h, m, s);
+            double total = sqlite3_column_double(stmt, 1);
+            double troco = sqlite3_column_double(stmt, 2);
+            printf("%-25s | %-6.2f | %-6.2f\n", datafOut, total, troco);
+            total_dia += total;
+        }
+        else {
+            printf("Sem vendas nesse período de datas!\n\n");
+            return -1;
+        }
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             const unsigned char *data = sqlite3_column_text(stmt, 0);
@@ -226,7 +273,7 @@ int relatorio_periodo(char *inicio, char *final)
             sprintf(datafOut, "%02d/%02d/%d %02d:%02d:%02d", dia, mes, ano, h, m, s);
             double total = sqlite3_column_double(stmt, 1);
             double troco = sqlite3_column_double(stmt, 2);
-            printf("%-25s | %-6.2f | %-6.2f\n", data, total, troco);
+            printf("%-25s | %-6.2f | %-6.2f\n", datafOut, total, troco);
             total_dia += total;
         }
     }

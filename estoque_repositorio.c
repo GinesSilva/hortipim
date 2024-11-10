@@ -11,6 +11,50 @@
 #include "vendas.h"
 #include "estoque_repositorio.h"
 
+double obter_quantidade(int codigo)
+{
+    sqlite3 *db;
+    int rc;
+    sqlite3_stmt *stmt;
+    double quantidade;
+    rc = sqlite3_open("hortifruti.db", &db);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
+    {
+        fprintf(stderr, "Erro ao preparar a consulta: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, codigo);
+        limpar_terminal();
+        int res = sqlite3_step(stmt);
+        if (res != SQLITE_ROW)
+        {
+            printf("Produto não encontrado!\n");
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return -1;
+        }
+        else
+        {
+            quantidade = sqlite3_column_double(stmt, 5);
+        }
+    }
+
+    printf("\n\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return quantidade;
+}
 int cadastrar_produto(Produto p)
 {
     sqlite3 *db;
@@ -111,17 +155,29 @@ int listar_codigo(int codigo)
     {
         sqlite3_bind_int(stmt, 1, codigo);
         limpar_terminal();
-        printf("%-6s | %-20s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
-        while (sqlite3_step(stmt) == SQLITE_ROW)
+        int res = sqlite3_step(stmt);
+        if (res != SQLITE_ROW)
         {
-            int codigo = sqlite3_column_int(stmt, 0);
-            const unsigned char *fornecedor_id = buscar_id(sqlite3_column_int(stmt, 1));
-            const unsigned char *descricao = sqlite3_column_text(stmt, 2);
-            double preco_compra = sqlite3_column_double(stmt, 3);
-            double preco_venda = sqlite3_column_double(stmt, 4);
-            double quantidade = sqlite3_column_double(stmt, 5);
+            printf("Produto não encontrado!\n");
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return 0;
+        }
+        else
+        {
+            printf("%-6s | %-20s | %-53s | %-6s | %-6s | %-14s\n", "Codigo", "Fornecedor", "Descrição", "Compra", "Venda", "Quantidade Kg");
+            while (res == SQLITE_ROW)
+            {
+                int codigo = sqlite3_column_int(stmt, 0);
+                const unsigned char *fornecedor_id = buscar_id(sqlite3_column_int(stmt, 1));
+                const unsigned char *descricao = sqlite3_column_text(stmt, 2);
+                double preco_compra = sqlite3_column_double(stmt, 3);
+                double preco_venda = sqlite3_column_double(stmt, 4);
+                double quantidade = sqlite3_column_double(stmt, 5);
 
-            printf("%-6d | %-20s | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
+                printf("%-6d | %-20s | %-51s | %-6.2f | %-6.2f | %-14.3f\n", codigo, fornecedor_id, descricao, preco_compra, preco_venda, quantidade);
+                res = SQLITE_DONE;
+            }
         }
     }
 
@@ -256,7 +312,6 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
     }
     else
     {
-        printf("Atualização realizada com sucesso!\n");
         int id = id_fornecedor(codigo);
         if (id <= 0)
         {
@@ -264,7 +319,6 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
         }
         else
         {
-            // sqlite3_finalize(stmt);
             rc = sqlite3_exec(db, "COMMIT;", 0, 0, &errMsg);
             if (rc != SQLITE_OK)
             {
@@ -279,6 +333,8 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
             }
         }
     }
+    sqlite3_close(db);
+    sqlite3_finalize(stmt);
     return 0;
 }
 
@@ -288,6 +344,13 @@ int saida_produtos(int codigo, float saida)
     sqlite3_stmt *stmt;
     char *errMsg = 0;
     int rc;
+
+    double qtde = obter_quantidade(codigo);
+
+    if(qtde - saida < 0) {
+        printf("A quantidade de saída não pode ser maior que %.2f", qtde);
+        return -1;
+    }
 
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc)
@@ -312,11 +375,12 @@ int saida_produtos(int codigo, float saida)
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE)
     {
+
         fprintf(stderr, "Erro ao executar o SQL: %s\n", sqlite3_errmsg(db));
     }
     else
     {
-        printf("Atualização realizada com sucesso!\n");
+        printf("Produto jogado na quebra!\n\n");
     }
 
     sqlite3_finalize(stmt);
