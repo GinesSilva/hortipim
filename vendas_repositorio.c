@@ -278,7 +278,7 @@ int relatorio_periodo(char *inicio, char *final)
         }
     }
     printf("\n\n");
-    printf("Total do dia: R$ %.2f", total_dia);
+    printf("Total do periodo: R$ %.2f", total_dia);
     printf("\n\n");
 
     sqlite3_finalize(stmt);
