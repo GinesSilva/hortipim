@@ -60,12 +60,12 @@ int entrada_de_produtos()
                     negativo = true;
                     do
                     {
-                        printf("Digite o preço:\n>>");
+                        printf("Digite o preco:\n>>");
                         fgets(input, sizeof(input), stdin);
                         preco = atof(input);
                         if (preco <= 0)
                         {
-                            printf("O preço deve ser maior que zero\n\n");
+                            printf("O preco deve ser maior que zero\n\n");
                         }
                         else
                         {
@@ -89,7 +89,7 @@ int entrada_de_produtos()
         else
         {
             limpar_terminal();
-            printf("Produto não encontrado!\n\nPressione ENTER para continuar...\n\n");
+            printf("Produto nao encontrado!\n\nPressione ENTER para continuar...\n\n");
         }
 
     } while (res == 0);
@@ -104,8 +104,8 @@ int saida_de_produtos()
     do
     {
         limpar_buffer();
-        printf("Saída de produtos (QUEBRA/PERDA)\n\n");
-        printf("Código do produto irá quebrar ou 0 para sair: ");
+        printf("Saida de produtos (QUEBRA/PERDA)\n\n");
+        printf("Codigo do produto ira quebrar ou 0 para sair: ");
         scanf("%d", &codigo);
         if (codigo == 0)
         {
@@ -121,13 +121,13 @@ int saida_de_produtos()
             do
             {
                 char opt;
-                printf("O produto está correto?(s/n)\n>>");
+                printf("O produto esta correto?(s/n)\n>>");
                 scanf("%c", &opt);
                 switch (opt)
                 {
                 case 's':
                     limpar_buffer();
-                    printf("Digite a quantidade de saída:\n>>");
+                    printf("Digite a quantidade de saida:\n>>");
                     scanf("%f", &quantidade);
                     saida_produtos(codigo, quantidade);
                     break;
@@ -145,7 +145,7 @@ int saida_de_produtos()
         else
         {
             limpar_terminal();
-            printf("Produto não encontrado!\n\nPressione ENTER para continuar...\n\n");
+            printf("Produto nao encontrado!\n\nPressione ENTER para continuar...\n\n");
         }
     } while (res == 0);
 
@@ -173,7 +173,7 @@ int relatorio_de_vendas_por_produto()
     limpar_terminal();
     int codigo;
     printf("Relatorio de vendas por produto\n\n");
-    printf("Codigo do produto que deseja obter o relatório ou 0 para sair: ");
+    printf("Codigo do produto que deseja obter o relatorio ou 0 para sair: ");
     limpar_buffer();
     scanf("%d", &codigo);
     if (codigo == 0)
@@ -199,7 +199,7 @@ int cadastro_de_produtos()
 
     do
     {
-        printf("Código do fornecedor: ");
+        printf("Codigo do fornecedor: ");
         fgets(input, sizeof(input), stdin);
         p.fornecedor_id = atoi(input);
         if (buscar_fornecedor(p.fornecedor_id) == false)
@@ -207,8 +207,8 @@ int cadastro_de_produtos()
             bool cont = true;
             do
             {
-                printf("Fornecedor não está cadastrado\n\n\n");
-                printf("(c) cancelar (n) novo fornecedor (d) digitar código\n>>");
+                printf("Fornecedor nao esta cadastrado\n\n\n");
+                printf("(c) cancelar (n) novo fornecedor (d) digitar codigo\n>>");
                 char res;
                 scanf("%c", &res);
                 limpar_buffer();
@@ -243,18 +243,18 @@ int cadastro_de_produtos()
     } while (buscar_fornecedor(p.fornecedor_id) == false || p.fornecedor_id <= 0);
 
     bool negativos = true;
-    printf("Descrição: ");
+    printf("Descricao: ");
     fgets(descricao, sizeof(descricao), stdin);
     descricao[strcspn(descricao, "\n")] = 0;
 
     do
     {
-        printf("Preço de compra: ");
+        printf("Preco de compra: ");
         fgets(input, sizeof(input), stdin);
         p.preco_de_compra = atof(input);
         if (p.preco_de_compra <= 0)
         {
-            printf("Inserir um valor maior que zero para o preço de compra do produto!\n\n");
+            printf("Inserir um valor maior que zero para o preco de compra do produto!\n\n");
         }
         else
         {
@@ -265,13 +265,13 @@ int cadastro_de_produtos()
     negativos = true;
     do
     {
-        printf("Preço de venda: ");
+        printf("Preco de venda: ");
         fgets(input, sizeof(input), stdin);
         p.preco_de_venda = atof(input);
 
         if (p.preco_de_venda <= 0)
         {
-            printf("Inserir um valor maior que zero para o preço de venda do produto!\n\n");
+            printf("Inserir um valor maior que zero para o preco de venda do produto!\n\n");
         }
         else
         {
@@ -287,18 +287,18 @@ int cadastro_de_produtos()
 
 int alterar_preco()
 {
-    printf("Alteração de preços\n\n");
+    printf("Alteracao de precos\n\n");
     int codigo;
     float preco;
     limpar_buffer();
-    printf("Codigo do produto irá alterar: ");
+    printf("Codigo do produto ira alterar: ");
     scanf("%d", &codigo);
     listar_codigo(codigo);
 
     limpar_buffer();
 
     char opt;
-    printf("O produto está correto?(s/n)\n>>");
+    printf("O produto esta correto?(s/n)\n>>");
     scanf("%c", &opt);
     switch (opt)
     {
@@ -307,11 +307,11 @@ int alterar_preco()
         do
         {
             limpar_buffer();
-            printf("Digite o novo preço: R$");
+            printf("Digite o novo preco: R$");
             scanf("%f", &preco);
             if (preco <= 0)
             {
-                printf("O preço do produto não pode ser igual ou menor que zero\n\n");
+                printf("O preco do produto nao pode ser igual ou menor que zero\n\n");
             }
             else
             {
