@@ -40,7 +40,7 @@ int entrada_de_produtos()
                 scanf("%c", &opt);
                 switch (opt)
                 {
-                case 's':
+                case 's':{
                     bool negativo = true;
                     limpar_buffer();
                     do
@@ -75,6 +75,7 @@ int entrada_de_produtos()
 
                     entrada_produtos(codigo, quantidade, preco);
                     break;
+                    } 
                 case 'n':
                     cont == false;
                     break;
@@ -302,7 +303,7 @@ int alterar_preco()
     scanf("%c", &opt);
     switch (opt)
     {
-    case 's':
+    case 's':{
         bool negativo = true;
         do
         {
