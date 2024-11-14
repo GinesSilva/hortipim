@@ -113,4 +113,6 @@ gcc *.c -o main.o -lsqlite3 && ./main.o
 
 ``` cmd
 gcc *.c -o main.exe -I "C:\sqlite" -L "C:\sqlite" -lsqlite3
-```
+``
+
+Jesus Cristo
