@@ -9,7 +9,7 @@ int produtos() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
       return -1;
   }
 
@@ -36,7 +36,7 @@ int fornecedores() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
       return -1;
   }
 
@@ -63,7 +63,7 @@ int vendas() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
       return -1;
   }
 
@@ -90,7 +90,7 @@ int produtos_vendidos_tabela() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
       return -1;
   }
 
@@ -117,7 +117,7 @@ int compras() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
       return -1;
   }
 
@@ -144,7 +144,7 @@ void criarBanco() {
 
   if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
   {
-      fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+      fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
   }
   sqlite3_close(db);
 
