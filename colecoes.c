@@ -10,7 +10,7 @@ void add(struct map_checkout **head, ProdutoCheckout produto_checkout, int index
     struct map_checkout *nova_lista = (struct map_checkout *)malloc(sizeof(struct map_checkout));
     if (nova_lista == NULL)
     {
-        printf("Erro ao alocar memória!\n\n");
+        printf("Erro ao alocar memoria!\n\n");
     }
 
     nova_lista->index = index;
@@ -42,7 +42,7 @@ void remover_elemento(struct map_checkout **head, int index) {
     }
 
     if (atual == NULL) {
-        printf("Elemento com index %d não encontrado na lista.\n", index);
+        printf("Elemento com index %d nao encontrado na lista.\n", index);
         return;
     }
 
@@ -59,7 +59,7 @@ void add_map(struct map_produto **head_map, int codigo, double quantidade, doubl
     struct map_produto *novo_map = (struct map_produto *)malloc(sizeof(struct map_produto));
     if (novo_map == NULL)
     {
-        printf("Erro ao alocar memória!\n\n");
+        printf("Erro ao alocar memoria!\n\n");
     }
 
     novo_map->index = index;
@@ -93,7 +93,7 @@ void remover_elemento_produto(struct map_produto **head, int index) {
     }
 
     if (atual == NULL) {
-        printf("Elemento com index %d não encontrado na lista.\n", index);
+        printf("Elemento com index %d nao encontrado na lista.\n", index);
         return;
     }
 
