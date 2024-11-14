@@ -14,7 +14,7 @@ int cadastro_fornecedor(Fornecedor fornecedor)
 
     if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
@@ -46,7 +46,7 @@ bool buscar_fornecedor(int id)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return false;
     }
 
@@ -83,14 +83,14 @@ char *buscar_id(int id)
     char *res = (char *)malloc(21 * sizeof(char));
     if (res == NULL)
     {
-        fprintf(stderr, "Erro ao alocar memória.\n");
+        fprintf(stderr, "Erro ao alocar memoria.\n");
         return "";
     }
 
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         free(res);
         return "";
     }
@@ -140,7 +140,7 @@ int listar_todos_fornecedores()
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT * FROM fornecedores;";
@@ -180,7 +180,7 @@ int buscar_por_cnpj(char *cnpj)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
@@ -221,7 +221,7 @@ int listar_historico_compra_fornecedor(int id_entrada)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT * FROM compras WHERE fornecedor_id = ?;";
