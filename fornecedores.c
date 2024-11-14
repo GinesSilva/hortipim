@@ -18,21 +18,21 @@ int cadastrar_fornecedores()
         char razao_social[256];
         char fantasia[256];
         printf("Cadastrar fornecedor...\n\n");
-        printf("Insira o cnpj (apenas números)\n\n>>");
+        printf("Insira o cnpj (apenas numeros)\n\n>>");
         fgets(cnpj, sizeof(cnpj), stdin);
         limpar_buffer();
-        printf("Insira a inscrição estadual (apenas números)\n\n>>");
+        printf("Insira a inscricao estadual (apenas numeros)\n\n>>");
         fgets(ie, sizeof(ie), stdin);
         ie[strcspn(ie, "\n")] = 0;
-        printf("Insira a razão social\n\n>>");
+        printf("Insira a razao social\n\n>>");
         fgets(razao_social, sizeof(razao_social), stdin);
         razao_social[strcspn(razao_social, "\n")] = 0;
         printf("Insira o nome fantasia\n\n>>");
         fgets(fantasia, sizeof(fantasia), stdin);
         fantasia[strcspn(fantasia, "\n")] = 0;
 
-        printf("Os dados estão corretos?(s/n)\n\n");
-        printf("cnpj: %s\nI.E.: %s\nrazão social: %s\nnome fantasia: %s\n\n>>", cnpj, ie, razao_social, fantasia);
+        printf("Os dados estao corretos?(s/n)\n\n");
+        printf("cnpj: %s\nI.E.: %s\nrazao social: %s\nnome fantasia: %s\n\n>>", cnpj, ie, razao_social, fantasia);
 
         char opt;
         scanf("%c", &opt);
@@ -70,7 +70,7 @@ int historico_de_compras()
     int id = buscar_por_cnpj(cnpj);
     if (id <= 0)
     {
-        printf("Fornecedor não encontrado!\n\n");
+        printf("Fornecedor nao encontrado!\n\n");
         return -1;
     }
     listar_historico_compra_fornecedor(id);
