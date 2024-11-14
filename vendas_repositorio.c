@@ -20,7 +20,7 @@ int produtos_vendidos(struct map_checkout *map, int id_venda)
 
         if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
         {
-            fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+            fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
             return -1;
         }
 
@@ -55,7 +55,7 @@ int registrar_nova_venda(struct venda *venda)
 
     if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
@@ -112,7 +112,7 @@ int emitir_nota_fiscal(struct venda *venda)
     fprintf(file, "\nTotal: R$ %-8.2f\n\n", venda->total);
 
     struct map_checkout *curr = venda->produtos;
-    fprintf(file, "%-4s %-50s %-10s\n", "Item", "Descrição", "Valor");
+    fprintf(file, "%-4s %-50s %-10s\n", "Item", "Descricao", "Valor");
     while (curr != NULL)
     {
         fprintf(file, "%-4d %-37s x %-7.3f %8.2f\n", curr->index, curr->pc.descricao, curr->pc.quantidade, curr->pc.preco);
@@ -131,7 +131,7 @@ int relatorio_venda_dia_banco(char *data)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT v.data_venda, v.total, v.troco FROM vendas v WHERE CAST(data_venda AS CHAR) LIKE ?;";
@@ -172,7 +172,7 @@ int relatorio_venda_dia_banco(char *data)
         }
         else
         {
-            printf("Não foi feita nenhuma venda hoje: %s\n\n", data);
+            printf("Nao foi feita nenhuma venda hoje: %s\n\n", data);
             return -1;
         }
         while (sqlite3_step(stmt) == SQLITE_ROW)
@@ -213,7 +213,7 @@ int relatorio_periodo(char *inicio, char *final)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT v.data_venda, v.total, v.troco FROM vendas v WHERE data_venda BETWEEN ? AND ?;";
@@ -255,7 +255,7 @@ int relatorio_periodo(char *inicio, char *final)
             total_dia += total;
         }
         else {
-            printf("Sem vendas nesse período de datas!\n\n");
+            printf("Sem vendas nesse periodo de datas!\n\n");
             return -1;
         }
         while (sqlite3_step(stmt) == SQLITE_ROW)
