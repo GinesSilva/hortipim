@@ -40,33 +40,33 @@ int set_setores()
 void set_estoque(Programa Programas_estoque[])
 {
     strcpy(Programas_estoque[0].nome, "Entrada de produtos");
-    strcpy(Programas_estoque[1].nome, "Saída de produtos");
-    strcpy(Programas_estoque[2].nome, "Relatório de vendas por produto");
+    strcpy(Programas_estoque[1].nome, "Saida de produtos");
+    strcpy(Programas_estoque[2].nome, "Relatorio de vendas por produto");
     strcpy(Programas_estoque[3].nome, "Cadastro de produtos");
-    strcpy(Programas_estoque[4].nome, "Buscar produto por código");
+    strcpy(Programas_estoque[4].nome, "Buscar produto por codigo");
     strcpy(Programas_estoque[5].nome, "Listar todos os produtos");
-    strcpy(Programas_estoque[6].nome, "Alteração de preços");
+    strcpy(Programas_estoque[6].nome, "Alteracao de precos");
 }
 
 void set_vendas(Programa Programas_vendas[])
 {
     strcpy(Programas_vendas[0].nome, "Nova venda");
-    strcpy(Programas_vendas[1].nome, "Relatório de vendas do dia");
-    strcpy(Programas_vendas[2].nome, "Relatório de vendas por período");
+    strcpy(Programas_vendas[1].nome, "Relatorio de vendas do dia");
+    strcpy(Programas_vendas[2].nome, "Relatorio de vendas por periodo");
 }
 
 void set_fornecedores(Programa Programas_fornecedores[])
 {
     strcpy(Programas_fornecedores[0].nome, "Cadastrar fornecedor");
     strcpy(Programas_fornecedores[1].nome, "Listar Fornecedores");
-    strcpy(Programas_fornecedores[2].nome, "Histórico de compras");
+    strcpy(Programas_fornecedores[2].nome, "Historico de compras");
 }
 
 int show_menu()
 {
     limpar_terminal();
     set_setores();
-    printf("Escolha a opção desejada\n\n");
+    printf("Escolha a opcao desejada\n\n");
     for (int i = 0; i < QTDE_SETORES; i++)
     {
         printf("[%d] - %s\n", i + 1, Setores[i]);
@@ -85,7 +85,7 @@ int show_estoque()
         Programa Programas_estoque[ESTOQUE_MENU];
         set_estoque(Programas_estoque);
         printf("ESTOQUE\n\n");
-        printf("Escolha a opção desejada \n\n");
+        printf("Escolha a opcao desejada \n\n");
         for (int i = 0; i < ESTOQUE_MENU; i++)
         {
             printf("[%d] - %s\n", i + 1, Programas_estoque[i]);
@@ -135,7 +135,7 @@ int show_vendas()
         Programa Programas_vendas[VENDAS_MENU];
         set_vendas(Programas_vendas);
         printf("VENDAS\n\n");
-        printf("Escolha a opção desejada \n\n");
+        printf("Escolha a opcao desejada \n\n");
         for (int i = 0; i < VENDAS_MENU; i++)
         {
             printf("[%d] - %s\n", i + 1, Programas_vendas[i]);
@@ -174,7 +174,7 @@ int show_fornecedores()
         Programa Programas_fornecedores[FORNECEDORES_MENU];
         set_fornecedores(Programas_fornecedores);
         printf("FORNECEDORES\n\n");
-        printf("Escolha a opção desejada \n\n");
+        printf("Escolha a opcao desejada \n\n");
         for (int i = 0; i < FORNECEDORES_MENU; i++)
         {
             printf("[%d] - %s\n", i + 1, Programas_fornecedores[i]);

@@ -20,7 +20,7 @@ double obter_quantidade(int codigo)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
@@ -37,7 +37,7 @@ double obter_quantidade(int codigo)
         int res = sqlite3_step(stmt);
         if (res != SQLITE_ROW)
         {
-            printf("Produto não encontrado!\n");
+            printf("Produto nao encontrado!\n");
             sqlite3_finalize(stmt);
             sqlite3_close(db);
             return -1;
@@ -62,13 +62,13 @@ int cadastrar_produto(Produto p)
 
     if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
     if (buscar_fornecedor(p.fornecedor_id) == false)
     {
-        printf("Fornecedor não está cadastrado");
+        printf("Fornecedor nao esta cadastrado");
         return -1;
     };
     sprintf(sql, "INSERT INTO produtos(codigo, fornecedor_id, descricao, preco_de_compra, preco_de_venda, quantidade) VALUES(NULL, %d, '%s', %.2f, %.2f, %.3f);",
@@ -99,7 +99,7 @@ int listar_todos()
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT * FROM produtos;";
@@ -141,7 +141,7 @@ int listar_codigo(int codigo)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT * FROM produtos WHERE codigo = ?;";
@@ -158,7 +158,7 @@ int listar_codigo(int codigo)
         int res = sqlite3_step(stmt);
         if (res != SQLITE_ROW)
         {
-            printf("Produto não encontrado!\n");
+            printf("Produto nao encontrado!\n");
             sqlite3_finalize(stmt);
             sqlite3_close(db);
             return 0;
@@ -202,13 +202,13 @@ int compra(int fornecedor_id, float quantidade, float preco)
     float valor_total = quantidade * preco;
     if (sqlite3_open("hortifruti.db", &db) != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
     if (buscar_fornecedor(fornecedor_id) == false)
     {
-        printf("Fornecedor não está cadastrado");
+        printf("Fornecedor nao esta cadastrado");
         return -1;
     };
     sprintf(sql, "INSERT INTO compras(id, fornecedor_id, quantidade, valor_total, data_compra) VALUES(NULL, '%d', %.3f, %.2f, '%s');", fornecedor_id, quantidade, valor_total, buffer);
@@ -238,7 +238,7 @@ int id_fornecedor(int codigo)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return -1;
@@ -278,14 +278,14 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return rc;
     }
 
     rc = sqlite3_exec(db, "BEGIN TRANSACTION;", 0, 0, &errMsg);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Erro ao iniciar a transação: %s\n", errMsg);
+        fprintf(stderr, "Erro ao iniciar a transacao: %s\n", errMsg);
         sqlite3_free(errMsg);
         sqlite3_close(db);
         return rc;
@@ -322,7 +322,7 @@ int entrada_produtos(int codigo, float quantidadeEntrada, float preco)
             rc = sqlite3_exec(db, "COMMIT;", 0, 0, &errMsg);
             if (rc != SQLITE_OK)
             {
-                fprintf(stderr, "Erro ao finalizar a transação: %s\n", errMsg);
+                fprintf(stderr, "Erro ao finalizar a transacao: %s\n", errMsg);
                 sqlite3_free(errMsg);
                 return rc;
             }
@@ -348,14 +348,14 @@ int saida_produtos(int codigo, float saida)
     double qtde = obter_quantidade(codigo);
 
     if(qtde - saida < 0) {
-        printf("A quantidade de saída não pode ser maior que %.2f", qtde);
+        printf("A quantidade de saida nao pode ser maior que %.2f", qtde);
         return -1;
     }
 
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return rc;
     }
 
@@ -399,7 +399,7 @@ int atualizar_preco(int codigo, float novo_preco)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return rc;
     }
 
@@ -423,7 +423,7 @@ int atualizar_preco(int codigo, float novo_preco)
     }
     else
     {
-        printf("Atualização realizada com sucesso!\n");
+        printf("Atualizacao realizada com sucesso!\n");
     }
 
     sqlite3_finalize(stmt);
@@ -441,7 +441,7 @@ Resultado buscar_produto(int codigo)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         Resultado r;
         r.cod = -1;
         return r;
@@ -492,7 +492,7 @@ int relatorio_produto(int codigo)
     rc = sqlite3_open("hortifruti.db", &db);
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "Não foi possível abrir o banco de dados: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Nao foi possivel abrir o banco de dados: %s\n", sqlite3_errmsg(db));
         return -1;
     }
     const char *sql = "SELECT pv.quantidade, pv.valor_total AS valor, v.data_venda, v.total, p.descricao FROM produtos_vendidos pv INNER JOIN vendas v ON v.id == pv.venda_id INNER JOIN produtos p ON p.codigo = ? WHERE pv.codigo = ?;";
@@ -507,7 +507,7 @@ int relatorio_produto(int codigo)
         sqlite3_bind_int(stmt, 1, codigo);
         sqlite3_bind_int(stmt, 2, codigo);
         limpar_terminal();
-        printf("%-10s | %-10s | %-25s | %-30s | %-6s | %13s\n", "Quantidade", "valor", "Data", "Descrição", "Total", "Total Compra");
+        printf("%-10s | %-10s | %-25s | %-30s | %-6s | %13s\n", "Quantidade", "valor", "Data", "Descricao", "Total", "Total Compra");
         while (sqlite3_step(stmt) == SQLITE_ROW)
         {
             double quantidade = sqlite3_column_double(stmt, 0);

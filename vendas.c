@@ -74,7 +74,7 @@ int registrar_venda()
     struct venda *venda = malloc(sizeof(Venda));
     if (venda == NULL)
     {
-        printf("Erro ao alocar memória para venda.\n");
+        printf("Erro ao alocar memoria para venda.\n");
         return 1;
     }
     char documento_cliente[16];
@@ -94,7 +94,7 @@ int registrar_venda()
         quantidade = 0;
         ProdutoCheckout p;
         Resultado r;
-        printf("Código do produto: ");
+        printf("Codigo do produto: ");
         fgets(input, sizeof(input), stdin);
         int codigo = atoi(input);
         printf("quantidade: ");
@@ -103,7 +103,7 @@ int registrar_venda()
         r = buscar_produto(codigo);
         if (r.cod != 0)
         {
-            printf("Produto não encontrado\n");
+            printf("Produto nao encontrado\n");
             quantidade = 0;
         }
         else
