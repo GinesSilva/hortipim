@@ -41,52 +41,6 @@ Para facilitar o uso do SQLite a partir do Prompt de Comando, você pode adicion
 
 Certifique-se de que você tem os arquivos de cabeçalho e a biblioteca do SQLite disponíveis para compilar seu código C que utiliza SQLite. Você pode precisar baixar a biblioteca de desenvolvimento do SQLite, que geralmente está disponível na mesma página de download.
 
-
-
-## Tabelas Banco de dados
-
-```sql
-CREATE TABLE IF NOT EXISTS produtos(
-    codigo INTEGER PRIMARY KEY,
-    fornecedor_id INTEGER,
-    descricao VARCHAR(50),
-    preco_de_compra DECIMAL(10,2),
-    preco_de_venda DECIMAL(10,2),
-    quantidade DECIMAL(10,3)
-);
-
-CREATE TABLE IF NOT EXISTS fornecedores(
-    id INTEGER PRIMARY KEY,
-    cnpj VARCHAR(14) UNIQUE,
-    inscricao_estadual VARCHAR(12)
-    razao_social VARCHAR(50) UNIQUE,
-    nome_fantasia VARCHAR(20)
-);
-
-CREATE TABLE IF NOT EXISTS vendas(
-    id INTEGER PRIMARY KEY,
-    data_venda DATETIME,
-    documento_cliente VARCHAR(14),
-    total DECIMAL(10,2),
-    troco DECIMAL(10,2)
-);
-
-CREATE TABLE IF NOT EXISTS produtos_vendidos(
-    id INTEGER PRIMARY KEY,
-    codigo INTEGER,
-    venda_id INTEGER,
-    quantidade DECIMAL(10,3),
-    valor_total DECIMAL(10,2)
-);
-
-CREATE TABLE IF NOT EXISTS compras(
-    id INTEGER PRIMARY KEY,
-    fornecedor_id INTEGER,
-    quantidade DECIMAL(10,3),
-    valor_total DECIMAL(10,2),
-    data_compra DATE
-);
-```
 ## Para acessar o banco de dados
 
 <p>No diretório que está banco de dados rode o comando</p>
@@ -112,5 +66,5 @@ gcc *.c -o main.o -lsqlite3 && ./main.o
 <p>* Lembrar de alterar os caminhos no comando</p>
 
 ``` cmd
-gcc *.c -o main.exe -I "C:\sqlite" -L "C:\sqlite" -lsqlite3
+gcc *.c -o main.exe
 ``

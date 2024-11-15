@@ -40,6 +40,7 @@ int cadastrar_fornecedores()
         switch (opt)
         {
         case 's':
+        {
             Fornecedor f;
             strcpy(f.cnpj, cnpj);
             strcpy(f.nome_fantasia, fantasia);
@@ -48,6 +49,7 @@ int cadastrar_fornecedores()
             cont = false;
             cadastro_fornecedor(f);
             break;
+        }
         case 'n':
             cont = true;
             break;
@@ -55,7 +57,7 @@ int cadastrar_fornecedores()
             cont = true;
             break;
         }
-    } while(cont == true);
+    } while (cont == true);
 
     return 0;
 }

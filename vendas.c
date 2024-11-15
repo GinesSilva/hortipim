@@ -145,6 +145,7 @@ int registrar_venda()
                 c2 = 1;
                 break;
             case 'f':
+            {
                 int conf_troco = 0;
                 cont = 1;
                 c2 = 1;
@@ -178,6 +179,7 @@ int registrar_venda()
                 emitir_nota_fiscal(venda);
                 registrar_nova_venda(venda);
                 break;
+            }
             case 'r':
                 limpar_buffer();
                 printf("Indice do protudo a ser removido: ");
